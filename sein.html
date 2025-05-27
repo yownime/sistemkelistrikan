@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Turn Signal Simulation</title>
+    <link rel="stylesheet" href="sein.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="components-sidebar">
+        <h2>Komponen</h2>
+        <div
+          class="component battery"
+          draggable="true"
+          data-component="battery"
+        >
+          <div class="battery-icon">
+            <img src="image/batre.png" alt="Battery" width="60" height="30" />
+          </div>
+          <span>AKI</span>
+        </div>
+        
+        <!-- Add new fuse component -->
+        <div
+          class="component fuse"
+          draggable="true"
+          data-component="fuse"
+        >
+          <div class="fuse-icon">
+            <img
+              src="image/fuse.jpg"
+              alt="Fuse"
+              width="40"
+              height="20"
+            />
+          </div>
+          <span>Sekring</span>
+        </div>
+        
+        <div class="component light" draggable="true" data-component="light">
+          <div class="light-icon">
+            <div class="light-bulb"></div>
+          </div>
+          <span>Lampu Sein</span>
+        </div>
+        
+        <!-- Replace separate turn switches with combined SW Sein component -->
+        <div
+          class="component sw-sein"
+          draggable="true"
+          data-component="sw-sein"
+        >
+          <div class="sw-sein-icon">
+            <img
+              src="image/switch.png"
+              alt="SW Sein"
+              width="30"
+              height="30"
+            />
+          </div>
+          <span>SW Sein</span>
+        </div>
+        
+        <div
+          class="component flasher"
+          draggable="true"
+          data-component="flasher"
+        >
+          <div class="flasher-icon">
+            <img
+              src="image/flasher.jpg"
+              alt="Flasher"
+              width="30"
+              height="30"
+            />
+          </div>
+          <span>Flasher</span>
+        </div>
+        <div class="component socket" draggable="true" data-component="socket">
+          <div class="socket-icon">
+            <img
+              src="image/kuncikontak.png"
+              alt="Socket Kunci Kontak"
+              width="50"
+              height="50"
+            />
+          </div>
+          <span>Kunci Kontak</span>
+        </div>
+        
+        <!-- Komponen Massa -->
+        <div class="component massa" draggable="true" data-component="massa">
+          <div class="massa-icon">
+            <img src="image/massa.png" alt="Massa" width="32" height="32" />
+          </div>
+          <span>Massa</span>
+        </div>
+        
+      </div>
+      <div class="workspace">
+        <h2>Simulasi Sistem Lampu Sein</h2>
+        <div class="workspace-area" id="workspace-area">
+          <div class="workspace-hint">
+            Silahkan klik komponen untuk menambahkan ke workspace
+          </div>
+        </div>
+        <div class="navigation-container">
+          <a href="rem.html" class="nav-button next-button"
+            >Simulasi Selanjutnya (Lampu Rem)</a
+          >
+        </div>
+      </div>
+    </div>
+    <script src="sein.js"></script>
+  </body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credits - Sistem Kelistrikan Sepeda Motor</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .credits-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #134e5e 0%, #71b280 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .credits-content {
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeIn 2s ease-in;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .credits-title {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+        }
+
+        .credits-name {
+            font-size: 2.5rem;
+            margin: 2rem 0;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(52, 152, 219, 0.5);
+        }
+
+        .credits-role {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            color: #bdc3c7;
+        }
+
+        .credits-thank-you {
+            font-size: 2rem;
+            margin-top: 3rem;
+            color: #ffffff;
+        }
+
+        .home-button {
+            margin-top: 3rem;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .home-button:hover {
+            background: #27ae60;
+            transform: scale(1.05);
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #2ecc71;
+            border-radius: 50%;
+            animation: sparkle 2s linear infinite;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .credits-decoration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .credits-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Remove these sparkle-related styles */
+        .sparkle {
+            /* Remove this entire block */
+        }
+
+        .credits-decoration {
+            /* Remove this entire block */
+        }
+
+        @keyframes sparkle {
+            /* Remove this entire block */
+        }
+
+        @keyframes sparkle {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-50px) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(0);
+            }
+        }
+    </style>
+    <!-- Add SheetJS library -->
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="credits-container">
+        <div class="credits-content">
+            <h1 class="credits-title">Terima Kasih</h1>
+            <div class="credits-name">Faisal Tanjung</div>
+            <div class="credits-role">Creator & Developer</div>
+            <p class="credits-thank-you">Terima kasih telah menggunakan simulator ini!</p>
+            <a href="#" class="home-button" onclick="sendDataToSheet(); return false;">Kembali ke Beranda</a>
+        </div>
+    </div>
+
+    <script>
+        // Add this function to check user data
+        function checkUserData() {
+            const userData = sessionStorage.getItem('userData');
+            if (!userData) {
+                alert('Silakan masukkan data diri Anda terlebih dahulu');
+                window.location.href = 'index.html';
+                return false;
+            }
+            return true;
+        }
+
+        function sendDataToSheet() {
+            if (!checkUserData()) return;
+            
+            try {
+                const userData = JSON.parse(sessionStorage.getItem('userData'));
+                const quizScore = sessionStorage.getItem('quizScore');
+                
+                console.log('User Data:', userData);
+                console.log('Quiz Score:', quizScore);
+                
+                // Create URL with parameters
+                const url = new URL('https://script.google.com/macros/s/AKfycbxlTmSB8GgI4gOgim6MDfJFpY_wHR3MyBlluZKlVuGQHnfesmB7zkcM_8QEv3JM0mMRTA/exec');
+                const params = {
+                    timestamp: new Date().toLocaleString(),
+                    nama: userData.nama,
+                    kelas: userData.kelas,
+                    jurusan: userData.jurusan,
+                    score: quizScore
+                };
+                
+                // Add parameters to URL
+                Object.keys(params).forEach(key => 
+                    url.searchParams.append(key, params[key])
+                );
+    
+                // Send as GET request instead
+                fetch(url.toString(), {
+                    method: 'GET',
+                    mode: 'no-cors'
+                })
+                .then(response => {
+                    console.log('Response received:', response);
+                    if (!response.ok && response.status !== 0) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response;
+                })
+                .then(() => {
+                    alert('Data berhasil disimpan!');
+                    sessionStorage.clear();
+                    window.location.href = 'index.html';
+                })
+                .catch(error => {
+                    console.error('Fetch Error:', error);
+                    alert('Error: ' + error.message);
+                });
+            } catch (error) {
+                console.error('Script Error:', error);
+                alert('Error: ' + error.message);
+            }
+        }
+    </script>
+    <script>
+        function downloadResults() {
+            const results = JSON.parse(sessionStorage.getItem('quizResults') || '[]');
+            
+            // Create worksheet
+            const ws = XLSX.utils.json_to_sheet(results);
+            
+            // Create workbook
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Quiz Results");
+            
+            // Generate Excel file
+            XLSX.writeFile(wb, `quiz_results_${new Date().toISOString().slice(0,10)}.xlsx`);
+            
+            // Clear session storage and redirect
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

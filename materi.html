@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi Pembelajaran - Sistem Kelistrikan Sepeda Motor</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="hero-content">
+            <h1>Materi Pembelajaran<span><br>SISTEM KELISTRIKAN SEPEDA MOTOR</span></h1>
+        </div>
+    </header>
+
+    <main class="materi-content">
+        <div class="container">
+            <div class="download-section">
+                <div class="pdf-preview">
+                    <i class="fas fa-file-pdf"></i>
+                    <h2>MODUL FAISAL TANJUNG.pdf</h2>
+                    <p>Modul pembelajaran lengkap sistem kelistrikan sepeda motor</p>
+                    <div class="learning-objectives">
+                        <h3 style="margin-top:2rem; margin-bottom:0.7rem; color:#2e7d32;">C. TUJUAN PEMBELAJARAN</h3>
+                        <ol style="margin-left:1.2rem; color:#333;">
+                            <li>Melalui materi yang ditayangkan, peserta didik mampu menjelaskan komponen sistem penerangan sesuai buku pedoman.</li>
+                            <li>Melalui diskusi, peserta didik mampu merinci prinsip kerja sistem penerangan sesuai buku pedoman.</li>
+                            <li>Melalui diskusi dan simulasi, peserta didik mampu mendiagnosis minimal 2 gangguan sistem penerangan, menyebutkan penyebabnya, dan menjelaskan cara perbaikannya sesuai buku pedoman.</li>
+                            <li>Melalui praktik, peserta didik mampu merawat sistem penerangan sesuai buku pedoman.</li>
+                            <li>Melalui proyek trainer sistem penerangan, peserta didik mampu memperbaiki gangguan sistem penerangan sesuai buku pedoman.</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="download-info">
+                    <p><i class="fas fa-info-circle"></i> Silakan download dan pelajari materi berikut dengan seksama</p>
+                    <a href="document/faisaltanjung.pdf" download class="download-button">
+                        <i class="fas fa-download"></i> Download Materi
+                    </a>
+                </div>
+                <div class="instruction">
+                    <p>Setelah selesai mempelajari materi, klik tombol di bawah untuk melanjutkan ke Quiz</p>
+                </div>
+            </div>
+
+            <div class="navigation-buttons">
+                <a href="index.html" class="nav-button back"><i class="fas fa-arrow-left"></i> Kembali</a>
+                <button onclick="markAsComplete()" class="nav-button next">Lanjut ke Quiz <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Simulator Sistem Kelistrikan Sepeda Motor. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function markAsComplete() {
+            completeSection('materi');
+            window.location.href = 'quiz.html';
+        }
+    </script>
+</body>
+</html>

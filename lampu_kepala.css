@@ -1,0 +1,594 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+}
+
+.container {
+  display: flex;
+  padding: 20px;
+  gap: 20px;
+  min-height: 100vh;
+}
+
+.components-sidebar {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 250px;
+}
+
+.workspace {
+  flex-grow: 1;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.workspace-area {
+  min-height: 500px;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+}
+
+.component {
+  cursor: move;
+  padding: 15px;
+  background: #f8f8f8;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: transform 0.2s;
+}
+
+.component:hover {
+  transform: translateY(-2px);
+  background: #f0f0f0;
+}
+
+.battery-icon {
+  position: relative;
+  width: 40px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.battery-icon img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.workspace .component {
+  position: absolute;
+  margin: 0;
+}
+
+.workspace .component.dragging {
+  opacity: 0.5;
+}
+
+.workspace-hint {
+  text-align: center;
+  color: #666;
+  padding: 20px;
+  font-size: 14px;
+}
+
+.voltage-control {
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 5px;
+}
+
+.voltage-input {
+  width: 60px;
+  padding: 2px 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #333;
+  -moz-appearance: textfield;
+}
+
+.voltage-input::-webkit-outer-spin-button,
+.voltage-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.voltage-input:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+}
+
+.connection-point {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #666;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.connection-point.output.positive {
+  right: -5px;
+  top: 5px;
+  background-color: #ff0000;
+}
+
+.connection-point.output.negative {
+  right: -5px;
+  bottom: 5px;
+  background-color: #000000;
+}
+
+.connection-point.input {
+  left: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.connection-point.selected {
+  box-shadow: 0 0 0 2px #4caf50;
+}
+
+.wire {
+  position: absolute;
+  height: 2px;
+  background: #333;
+  transform-origin: left center;
+  z-index: 1;
+}
+
+.wire.powered {
+  background-color: #ffd700;
+  box-shadow: 0 0 5px #ffd700;
+}
+
+.color-picker-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.color-picker-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.color-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.color-option {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #ddd;
+}
+
+.color-option:hover {
+  transform: scale(1.1);
+}
+
+.navigation-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.nav-button {
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.nav-button:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+}
+
+.prev-button::before {
+  content: "← ";
+}
+
+.headlight-icon {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+.headlight-bulb {
+  width: 20px;
+  height: 20px;
+  background-color: #777;
+  border-radius: 50%;
+  border: 1px solid #666;
+  transition: all 0.3s ease;
+}
+
+.headlight-bulb.powered {
+  background-color: #ffd700 !important; /* Warna kuning cerah */
+  box-shadow: 0 0 10px #ffd700, 0 0 15px rgba(255, 215, 0, 0.7) !important;
+  border: 1px solid #fff;
+}
+
+.headlight-bulb.high-beam {
+  background-color: #ffff00 !important; /* Warna kuning lebih cerah untuk lampu jauh */
+  box-shadow: 0 0 15px #ffff00, 0 0 25px rgba(255, 255, 0, 0.9),
+    0 0 40px rgba(255, 255, 0, 0.7) !important;
+}
+
+.headlight-icon::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 40px solid rgba(255, 215, 0, 0);
+  transform: rotate(90deg);
+  right: -35px;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.headlight-icon.powered::before {
+  border-bottom: 40px solid rgba(255, 215, 0, 0.2);
+}
+
+.switch-icon {
+  position: relative;
+  width: 28px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  background-color: #ddd;
+  border-radius: 10px;
+  padding: 2px;
+}
+
+.switch-toggle {
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  left: 2px;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.switch-toggle.on {
+  left: calc(100% - 18px);
+  background-color: #4caf50;
+}
+
+.switch-button {
+  position: absolute;
+  padding: 4px 8px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Tambahkan style untuk titik koneksi daya tunggal */
+.connection-point.power {
+  background-color: #4caf50;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #2e7d32;
+}
+
+.speedometer-icon {
+  position: relative;
+  width: 30px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #333;
+  border-radius: 10px;
+  border: 1px solid #222;
+}
+
+.speedometer-light {
+  width: 20px;
+  height: 12px;
+  background: #777;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.speedometer-light.powered {
+  background-color: #00ffff !important;
+  box-shadow: 0 0 10px #00ffff, 0 0 20px rgba(0, 255, 255, 0.8) !important;
+}
+
+/* Style untuk switch lampu jauh */
+.high-beam-switch .switch-body {
+  width: 40px;
+  height: 20px;
+  background-color: #555;
+  border-radius: 20px;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid #222;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+}
+
+.high-beam-switch .switch-toggle {
+  width: 16px;
+  height: 16px;
+  background-color: #ddd;
+  border-radius: 50%;
+  position: relative;
+  transition: transform 0.3s ease;
+  left: 0;
+}
+
+.high-beam-switch.active .switch-toggle {
+  transform: translateX(20px);
+  background-color: #4caf50;
+}
+
+/* Indikator teks untuk mode lampu */
+.high-beam-switch .switch-body::before {
+  content: "DEKAT";
+  position: absolute;
+  font-size: 7px;
+  color: #ddd;
+  left: 4px;
+  top: 6px;
+}
+
+.high-beam-switch.active .switch-body::before {
+  content: "JAUH";
+  left: auto;
+  right: 5px;
+}
+
+/* Perbaikan CSS untuk switch on/off */
+.switch .switch-body {
+  width: 40px;
+  height: 20px;
+  background-color: #555;
+  border-radius: 20px;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid #222;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+}
+
+.switch .switch-toggle {
+  width: 16px;
+  height: 16px;
+  background-color: #ddd;
+  border-radius: 50%;
+  position: relative;
+  transition: transform 0.3s ease;
+  left: 0;
+}
+
+.switch.active .switch-toggle {
+  transform: translateX(20px);
+  background-color: #4caf50;
+}
+
+/* Indikator teks on/off */
+.switch .switch-body::before {
+  content: "OFF";
+  position: absolute;
+  font-size: 7px;
+  color: #ddd;
+  left: 4px;
+  top: 6px;
+}
+
+.switch.active .switch-body::before {
+  content: "ON";
+  left: auto;
+  right: 5px;
+}
+
+/* Style untuk indikator lampu jauh */
+.high-beam-icon {
+  position: relative;
+  width: 30px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #333;
+  border-radius: 10px;
+  border: 1px solid #222;
+}
+
+.high-beam-light {
+  width: 20px;
+  height: 12px;
+  background: #777;
+  border-radius: 10px; /* Bentuk oval */
+  transition: all 0.3s ease;
+}
+
+.high-beam-light.powered {
+  background-color: #0066ff !important; /* Biru terang untuk indikator lampu jauh */
+  box-shadow: 0 0 10px #0066ff, 0 0 20px rgba(0, 102, 255, 0.8) !important;
+}
+
+/* Tambahkan ikon kecil untuk menunjukkan simbol lampu jauh */
+.high-beam-icon::before {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 1px solid #fff;
+  top: 5px;
+  left: 8px;
+}
+
+.high-beam-icon::after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 2px;
+  background-color: #fff;
+  top: 12px;
+  left: 9px;
+  box-shadow: 0 0 1px #fff;
+}
+
+/* Style untuk fuse */
+.fuse-icon {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f8f8;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.fuse-icon img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.fuse {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  background-color: white;
+}
+
+.fuse.blown .fuse-icon {
+  position: relative;
+}
+
+.fuse.blown .fuse-icon::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  background-color: red;
+  transform: rotate(45deg);
+}
+
+/* Style untuk kunci kontak */
+.ignition-key-icon {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f8f8;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.ignition-key-icon img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.ignition-key {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  background-color: white;
+}
+
+/* Komponen Massa */
+.massa-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #e0e0e0;
+  border-radius: 50%;
+  border: 1.5px solid #bbb;
+  margin-right: 6px;
+}
+
+.component.massa {
+  background: #f4f4f4;
+  border: 1.5px solid #d1d1d1;
+}

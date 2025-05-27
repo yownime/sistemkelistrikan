@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Kelistrikan Sepeda Motor</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="hero">
+        <div class="logo-container">
+            <img src="image/logounimed.png" alt="Logo UNIMED" class="logo">
+            <img src="image/smk14.png" alt="Logo SMK 14" class="logo">
+        </div>
+        <div class="hero-content">
+            <div class="welcome-banner">
+                <div class="user-profile">
+                    <div class="profile-icon">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="profile-info">
+                        <div class="profile-name">
+                            <i class="fas fa-user"></i>
+                            <span class="user-name">Selamat Datang</span>
+                        </div>
+                        <div class="profile-class">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span class="user-class">Silakan login untuk memulai</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h1>Sistem Kelistrikan Sepeda Motor<span>PEMBELAJARAN INTERAKTIF</span></h1>
+            <p>Pelajari prinsip dasar hingga aplikasi kompleks pada sistem pencahayaan dan kelistrikan kendaraan roda dua</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="menu-section">
+            <div class="container">
+                <h2 class="section-title">Menu Pembelajaran</h2>
+                <div class="menu-grid">
+                    <a href="paduan.html" class="menu-card" data-menu="panduan">
+                        <div class="menu-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h2>Panduan</h2>
+                        <p>Petunjuk penggunaan aplikasi pembelajaran</p>
+                    </a>
+
+                    <a href="materi.html" class="menu-card locked" data-menu="materi">
+                        <div class="menu-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                            <i class="fas fa-lock lock-icon"></i>
+                        </div>
+                        <h2>Materi</h2>
+                        <p>Pembelajaran sistem kelistrikan sepeda motor</p>
+                    </a>
+
+                    <a href="quiz.html" class="menu-card locked" data-menu="quiz">
+                        <div class="menu-icon">
+                            <i class="fas fa-question-circle"></i>
+                            <i class="fas fa-lock lock-icon"></i>
+                        </div>
+                        <h2>Quiz</h2>
+                        <p>Uji pemahaman materi melalui kuis interaktif</p>
+                    </a>
+
+                    <a href="sein.html" class="menu-card locked" data-menu="simulasi">
+                        <div class="menu-icon">
+                            <i class="fas fa-tools"></i>
+                            <i class="fas fa-lock lock-icon"></i>
+                        </div>
+                        <h2>Simulasi</h2>
+                        <p>Praktik simulasi rangkaian kelistrikan</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p>&copy; 2023 Simulator Sistem Kelistrikan Sepeda Motor</p>
+                </div>
+                <div class="footer-social">
+                    <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Researcher Profile Button -->
+    <div class="researcher-profile-icon" id="researcherProfileBtn" title="Profil Peneliti">
+        <i class="fas fa-user-graduate"></i>
+        <span class="badge">?</span>
+    </div>
+
+    <!-- Researcher Modal -->
+    <div id="researcherModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-avatar">
+                    <img src="image/profile.jpeg" alt="Foto Profil Peneliti" class="researcher-avatar-img">
+                </div>
+                <h3>Profil Peneliti</h3>
+                <button class="close-btn" id="closeResearcherModal" title="Tutup">&times;</button>
+            </div>
+            <div class="researcher-info-list">
+                <div class="info-item"><i class="fas fa-user"></i> <span><strong>Nama:</strong> Faisal Tanjung</span></div>
+                <div class="info-item"><i class="fas fa-envelope"></i> <span><strong>Email:</strong> tanjungfeisal522@gmail.com</span></div>
+                <div class="info-item"><i class="fas fa-university"></i> <span><strong>Institusi:</strong> Universitas Negeri Medan</span></div>
+                <div class="info-item"><i class="fas fa-cogs"></i> <span><strong>Bidang:</strong> Pendidikan Teknik Otomotif</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Check user registration immediately before page loads
+        if (!sessionStorage.getItem('userData')) {
+            window.location.replace('landing.html');
+        }
+
+        // Display user info if available
+        const userData = JSON.parse(sessionStorage.getItem('userData'));
+        if (userData) {
+            const userInfo = document.querySelector('.user-profile');
+            userInfo.innerHTML = `
+                <div class="profile-icon">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="profile-info">
+                    <div class="profile-name">
+                        <i class="fas fa-user"></i>
+                        <span class="user-name">${userData.nama}</span>
+                    </div>
+                    <div class="profile-class">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span class="user-class">Kelas ${userData.kelas} ${userData.jurusan}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Researcher modal logic
+        const researcherBtn = document.getElementById('researcherProfileBtn');
+        const researcherModal = document.getElementById('researcherModal');
+        const closeResearcherModal = document.getElementById('closeResearcherModal');
+        
+        researcherBtn.addEventListener('click', function() {
+            researcherModal.classList.add('show');
+        });
+        closeResearcherModal.addEventListener('click', function() {
+            researcherModal.classList.remove('show');
+        });
+        window.addEventListener('click', function(event) {
+            if (event.target === researcherModal) {
+                researcherModal.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

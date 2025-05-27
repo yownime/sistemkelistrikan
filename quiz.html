@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz - Sistem Kelistrikan Sepeda Motor</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+  </head>
+  <body>
+    <header class="sub-hero">
+      <div class="hero-content">
+        <h1>
+          Quiz Interaktif<span><br />UJI PEMAHAMAN MATERI</span>
+        </h1>
+      </div>
+    </header>
+
+    <main class="quiz-content">
+      <div class="container">
+        <div class="quiz-container">
+          <div id="quiz-header">
+            <div class="quiz-info">
+              <span id="question-number">Pertanyaan 1 dari 10</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress" id="progress"></div>
+            </div>
+          </div>
+
+          <div id="question-container">
+            <!-- Questions will be inserted here by JavaScript -->
+          </div>
+
+          <div id="results-container" style="display: none">
+            <h2>Hasil Quiz</h2>
+            <div id="score-display"></div>
+            <div id="answers-review"></div>
+          </div>
+
+          <div class="quiz-controls">
+            <button id="submit-btn" class="quiz-button">Jawab</button>
+            <button id="next-btn" class="quiz-button" style="display: none">
+              Pertanyaan Berikutnya
+            </button>
+            <button id="finish-btn" class="quiz-button" style="display: none">
+              Selesai
+            </button>
+            <button id="retry-btn" class="quiz-button" style="display: none">
+              Coba Lagi
+            </button>
+          </div>
+        </div>
+
+        <div class="navigation-buttons">
+          <a href="index.html" class="nav-button back"
+            ><i class="fas fa-arrow-left"></i> Kembali</a
+          >
+          <button
+            id="complete-btn"
+            onclick="markAsComplete()"
+            class="nav-button next"
+            style="display: none"
+          >
+            Lanjut ke Simulasi <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          &copy; 2023 Simulator Sistem Kelistrikan Sepeda Motor. All rights
+          reserved.
+        </p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+      const questions = [
+        {
+          question:
+            "1.	Apa fungsi utama dari sistem penerangan pada sepeda motor?",
+          options: [
+            "Menambah kecepatan motor",
+            "Memberi efek estetika",
+            "Sebagai alat penerangan jalan di malam hari bagi pengemudi dan tanda bagi pengendara lain",
+            "Mengurangi konsumsi bahan bakar",
+            "Menghasilkan daya listrik tambahan",
+          ],
+          correct: 2,
+        },
+        {
+          question:
+            "2.	Bagaimana cara kerja lampu depan utama pada sepeda motor saat dinyalakan di malam hari?",
+          options: [
+            "Saklar starter menyalurkan arus langsung ke aki untuk menyalakan lampu depan",
+            "Ketika kunci kontak ON dan saklar lampu diaktifkan, arus listrik dari aki atau spul mengalir ke lampu depan melalui sekring dan saklar",
+            "Spul menghasilkan arus AC yang langsung dikirim ke lampu rem belakang",
+            "Lampu depan menyala otomatis saat sensor cahaya mendeteksi sinar matahari",
+            "Lampu utama hanya bisa menyala saat mesin mati dan kontak OFF",
+          ],
+          correct: 1,
+        },
+        {
+          question: "3.	Jika lampu rem tidak menyala saat tuas ditekan, kemungkinan penyebabnya adalah...",
+          options: ["Saklar lampu utama rusak", "Bohlam lampu depan putus", "Sekring utama dalam kondisi baik", "Switch rem rusak atau tidak terhubung dengan baik", "Aki dalam kondisi penuh dan normal"],
+          correct: 3,
+        },
+        {
+          question:
+            "4.	Apa langkah awal dalam memperbaiki sistem penerangan yang tidak berfungsi?",
+          options: [
+            "Mengganti semua bohlam dengan yang baru",
+            "Mengecek kabel massa dan memotong yang rusak",
+            "Memeriksa dan memastikan sumber tegangan serta kondisi sekring",
+            "Membersihkan reflektor lampu",
+            "Melepas seluruh instalasi kelistrikan",
+          ],
+          correct: 2,
+        },
+        {
+          question: "5.	Apa manfaat penggunaan media website dalam pembelajaran sistem penerangan?",
+          options: [
+            "Membuat siswa bergantung sepenuhnya pada guru saat praktik",
+            "Membatasi akses informasi hanya pada jam pelajaran di sekolah",
+            "Menyediakan materi visual dan interaktif yang dapat diakses kapan saja",
+            "Menghilangkan kebutuhan akan praktik langsung di bengkel",
+            "Mengurangi pemahaman siswa karena terlalu banyak teks",
+          ],
+          correct: 2,
+        },
+        {
+          question:
+            "6.	Salah satu keunggulan pembelajaran sistem kelistrikan melalui website adalah...",
+          options: [
+            "Memberikan kemudahan bagi siswa untuk mengakses materi secara fleksibel dan mandiri",
+            "Membatasi interaksi langsung antara siswa dan pengajar",
+            "Menggantikan sepenuhnya kebutuhan akan pembelajaran praktikum di bengkel",
+            "Menyediakan informasi yang tidak relevan dengan kurikulum",
+            "Mengurangi pemahaman siswa terhadap konsep dasar kelistrikan",
+          ],
+          correct: 0,
+        },
+        {
+          question:
+            "7.	Apa fungsi utama wiring diagram pada sistem penerangan?",
+          options: [
+            "Menghitung daya listrik",
+            "Menyambung kabel secara acak",
+            "Menunjukkan jalur aliran listrik dan koneksi antar komponen",
+            "Menentukan ukuran ban",
+            "Menghitung bahan bakar",
+          ],
+          correct: 2,
+        },
+        {
+          question: "8.	Dalam diagram kelistrikan sistem penerangan, simbol “G” biasanya menunjukkan...",
+          options: [
+            "Ground atau massa",
+            "Generator",
+            "Gearbox pengatur pencahayaan ",
+            "Garis tegangan tinggi",
+            "Gabungan antara kabel positif dan negatif",
+          ],
+          correct: 0,
+        },
+        {
+          question:
+            "9.	Alat yang digunakan untuk mengukur tegangan dan hambatan listrik adalah...",
+          options: [
+            "Test pen",
+            "Obeng",
+            "Multimeter",
+            "Lampu indikator",
+            "AVO meter",
+          ],
+          correct: 4,
+        },
+        {
+          question:
+            "10.	Ketika mengukur tegangan pada bohlam dengan multimeter, posisi selector harus pada...",
+          options: [
+            "Ohm (Ω)",
+            "Ampere (A)",
+            "Volt DC (V⎓)",
+            "Volt AC (V~)",
+            "Hertz",
+          ],
+          correct: 2,
+        },
+        {
+          question:
+            "11.	Setelah bohlam diganti, langkah berikutnya untuk memastikan sistem penerangan berfungsi adalah...",
+          options: [
+            "Memeriksa kapasitas aki",
+            "Menyalakan sistem penerangan dan mengamati apakah lampu menyala dengan normal",
+            "Membersihkan reflektor lampu",
+            "Memeriksa sistem pendinginan mesin",
+            "Mengganti sekring utama",
+          ],
+          correct: 1,
+        },
+        {
+          question:
+            "12.	Uji fungsi sistem penerangan dilakukan untuk...",
+          options: ["Menambah daya motor", "Mengurangi panas mesin", "Memastikan semua lampu berfungsi sesuai kebutuhan", "Mengetahui seberapa terang reflektor memantulkan cahaya","Membuat suara klakson lebih nyaring",],
+          correct: 2,
+        },
+        {
+          question:
+            "13.	Komponen sistem penerangan yang mengubah energi listrik menjadi cahaya adalah...",
+          options: ["Flasher", "Sekring", "Bolham", "Generator","Spul",],
+          correct: 2,
+        },
+        {
+          question:
+            "14.	Apa akibatnya jika saklar lampu tidak terhubung dengan baik...",
+          options: ["Lampu menyala lebih terang dari biasanya", "Lampu tidak menyala karena jalur aliran listrik terputus", "Lampu tetap menyala", "Lebih irit baterai","Semua lampu akan berkedip secara bersamaan",],
+          correct: 1,
+        },
+        {
+          question:
+            "15.	Keunggulan simulator kelistrikan dalam pembelajaran adalah...",
+          options: ["Mengganti sepenuhnya penggunaan alat kelistrikan nyata", "Menggantikan semua praktik nyata", "Memberi simulasi kerja nyata tanpa risiko kerusakan", "Mahal dan sulit digunakan","Tidak butuh pemahaman teori",],
+          correct: 2,
+        },
+        {
+          question:
+            "16.	Pembelajaran dengan bantuan simulator dapat membantu siswa untuk...",
+          options: [
+            "Tidak memerlukan praktik langsung",
+            "Menghindari tugas rumah",
+            "Meningkatkan keterampilan analisis rangkaian secara aman",
+            "Mempercepat nilai akhir",
+            "Menunda ujian",
+          ],
+          correct: 2,
+        },
+        {
+          question:
+            "17.	Langkah pertama saat menemukan lampu sein tidak berkedip adalah...",
+          options: [
+            "Memeriksa sumber tegangan dan sambungan kabel",
+            "Mengecek aki",
+            "Mengecek bohlam, karena ada bohlam sein yang putus",
+            "Mengganti flasher",
+            "Mengganti switch",
+          ],
+          correct: 2,
+        },
+        {
+          question:
+            "18.	Bila lampu kepala tidak berfungsi padahal kondisi tegangan baterai 11,7 volt, langkah selanjutnya dilakukan adalah...",
+          options: [
+            "Mengecas baterai",
+            "Mengecek sekering ",
+            "Mengecek switch",
+            "Mengecek bohlam",
+            "A, B, C dan D",
+          ],
+          correct: 4,
+        },
+        {
+          question:
+            "19.	Sistem penerangan sistem DC pada sebuah sepeda motor aliran atau alur jalannya arus lampu kota atau lampu senja adalah ....",
+          options: [
+            "baterai --> sekering --> kunci kontak --> lampu senja depan dan lampu kota belakang --> massa",
+            "baterai --> kunci kontak --> sekering --> lampu senja depan dan lampu kota belakang --> negatif baterai",
+            "baterai --> sekering --> kunci kontak --> lampu senja depan dan lampu kota belakang --> negatif baterai",
+            "baterai --> kunci kontak --> sekering -->lampu senja depan dan lampu kota belakang --> massa",
+            "Kunci Kontak --> baterai --> sekering -->lampu senja depan dan lampu kota belakang --> massa",
+          ],
+          correct: 0,
+        },
+        {
+          question:
+            "20.	Alat apa saja yang wajib dipersiapkan sebelum melakukan perbaikan lampu kepala…",
+          options: [
+            "Multimeter",
+            "Obeng",
+            "Tang Pengupas",
+            "Isolasi kabel",
+            "Semua Benar",
+          ],
+          correct: 4,
+        },
+        {
+          question:
+            "21.	Komponen yang berfungsi sebagai pengaman rangkaian listrik pada sistem penerangan adalah...",
+          options: [
+            "Bohlam",
+            "Kunci Kontak",
+            "Kabel",
+            "Sekring",
+            "Baterai",
+          ],
+          correct: 3,
+        },
+        {
+          question:
+            "22.	Salah satu cara untuk mengetahui sekring putus adalah...",
+          options: [
+            "Memutar saklar rem",
+            "Menyentuh kabel dengan tangan",
+            "Melihat filamen putus atau mengukur dengan multimeter",
+            "Mengganti bohlam",
+            "Memutar Kunci Kontak",
+          ],
+          correct: 2,
+        },
+        {
+          question:
+            "23.	Jika lampu sein berkedip terlalu cepat, kemungkinan kerusakannya adalah...",
+          options: [
+            "Aki terlalu penuh sehingga arus listrik berlebih",
+            "Bohlam lampu sein bertambah satu buah",
+            "Flasher mengalami kelebihan beban dan bekerja normal",
+            "Salah satu bohlam lampu sein putus atau rusak",
+            "Saklar lampu utama dalam kondisi OFF",
+          ],
+          correct: 3,
+        },
+        {
+          question:
+            "24.	Apa yang akan terjadi jika kabel massa pada sistem penerangan terlepas?",
+          options: [
+            "Lampu akan menyala lebih terang dari biasanya",
+            "Sistem pengisian akan bekerja dua kali lebih cepat",
+            "Semua lampu akan tetap menyala normal tanpa gangguan",
+            "Lampu tidak akan menyala karena arus listrik tidak mengalir sempurna",
+            "Sekring akan langsung meleleh dan putus",
+          ],
+          correct: 3,
+        },
+        {
+          question:
+            "25.	Pada Gambar di bawah, jika lampu indikator jauh tidak menyala namun lampu indikator dekat menyala kemungkinannya adalah...",
+          image: "image/quiz/altenator.png",
+          options: [
+            "A.	Bohlam lampu jauh putus",
+            "B.	Regulator tidak bisa membatasi tegangan",
+            "C.	Konektor lampu jauh rusak",
+            "D.	Saklar lampu mengalami kerusakan",
+            "E.	Aki sudah soak",
+          ],
+          correct: 2,
+        },
+      ];
+
+      let currentQuestion = 0;
+      let answers = new Array(questions.length).fill(-1);
+
+      function displayQuestion() {
+        const question = questions[currentQuestion];
+        const container = document.getElementById("question-container");
+        const html = `
+                <div class="question">
+                    <h2>${question.question}</h2>
+                    ${
+                      question.image
+                        ? `<div class="question-image"><img src="${question.image}" alt="Quiz Image"></div>`
+                        : ""
+                    }
+                    <div class="options">
+                        ${question.options
+                          .map(
+                            (option, index) => `
+                            <label class="option">
+                                <input type="radio" name="answer" value="${index}" ${
+                              answers[currentQuestion] === index
+                                ? "checked"
+                                : ""
+                            }>
+                                <span class="option-text">${option}</span>
+                            </label>
+                        `
+                          )
+                          .join("")}
+                    </div>
+                </div>
+            `;
+        container.innerHTML = html;
+        updateProgress();
+      }
+
+      function updateProgress() {
+        document.getElementById("question-number").textContent = `Pertanyaan ${
+          currentQuestion + 1
+        } dari 18`;
+        const progress = ((currentQuestion + 1) / questions.length) * 100;
+        document.getElementById("progress").style.width = `${progress}%`;
+      }
+
+      function saveAnswer() {
+        const selected = document.querySelector('input[name="answer"]:checked');
+        if (!selected) {
+          alert("Silakan pilih jawaban terlebih dahulu!");
+          return false;
+        }
+        answers[currentQuestion] = parseInt(selected.value);
+        return true;
+      }
+
+      function nextQuestion() {
+        if (!saveAnswer()) return;
+
+        if (currentQuestion < questions.length - 1) {
+          currentQuestion++;
+          displayQuestion();
+        } else {
+          showResults();
+        }
+      }
+
+      function showResults() {
+        const container = document.getElementById("question-container");
+        const resultsContainer = document.getElementById("results-container");
+        const scoreDisplay = document.getElementById("score-display");
+        const answersReview = document.getElementById("answers-review");
+
+        container.style.display = "none";
+        resultsContainer.style.display = "block";
+
+        // Calculate score and round it to whole number
+        const correctAnswers = answers.filter(
+          (answer, index) => answer === questions[index].correct
+        ).length;
+        const score = Math.round((correctAnswers / questions.length) * 100);
+        sessionStorage.setItem('quizScore', score);
+
+        // Save results to Excel
+        const userData = JSON.parse(sessionStorage.getItem('userData'));
+        const resultData = {
+            Timestamp: new Date().toLocaleString(),
+            Nama: userData.nama,
+            Kelas: userData.kelas,
+            Jurusan: userData.jurusan,
+            Nilai: score,
+            'Jawaban Benar': correctAnswers,
+            'Total Soal': questions.length
+        };
+
+        // Save to session storage for later use
+        let allResults = JSON.parse(sessionStorage.getItem('quizResults') || '[]');
+        allResults.push(resultData);
+        sessionStorage.setItem('quizResults', JSON.stringify(allResults));
+
+        // Display score and review
+        scoreDisplay.innerHTML = `
+                <div class="final-score">
+                    <h3>Skor Anda: ${score}%</h3>
+                    <p>Jawaban Benar: ${correctAnswers} dari ${questions.length}</p>
+                </div>
+            `;
+
+        // Show review of all questions
+        const reviewHtml = questions
+          .map(
+            (question, index) => `
+                <div class="review-item ${
+                  answers[index] === question.correct ? "correct" : "wrong"
+                }">
+                    <p><strong>Pertanyaan ${index + 1}:</strong> ${
+              question.question
+            }</p>
+                    <p>Jawaban Anda: ${question.options[answers[index]]}</p>
+                    <p>Jawaban Benar: ${question.options[question.correct]}</p>
+                </div>
+            `
+          )
+          .join("");
+
+        answersReview.innerHTML = reviewHtml;
+
+        // Show appropriate buttons
+        document.getElementById("submit-btn").style.display = "none";
+        document.getElementById("next-btn").style.display = "none";
+        document.getElementById("finish-btn").style.display = "none";
+        document.getElementById("retry-btn").style.display = "block";
+        document.getElementById("complete-btn").style.display = "block"; // Always show complete button
+      }
+
+      function retryQuiz() {
+        currentQuestion = 0;
+        answers = new Array(questions.length).fill(-1);
+        document.getElementById("question-container").style.display = "block";
+        document.getElementById("results-container").style.display = "none";
+        document.getElementById("submit-btn").style.display = "block";
+        document.getElementById("retry-btn").style.display = "none";
+        document.getElementById("complete-btn").style.display = "none";
+        displayQuestion();
+      }
+
+      function markAsComplete() {
+        window.location.href = "sein.html";
+      }
+
+      // Event Listeners
+      document
+        .getElementById("submit-btn")
+        .addEventListener("click", function () {
+          if (saveAnswer()) {
+            if (currentQuestion < questions.length - 1) {
+              currentQuestion++;
+              displayQuestion();
+            } else {
+              showResults();
+            }
+          }
+        });
+      document.getElementById("retry-btn").addEventListener("click", retryQuiz);
+
+      // Initialize quiz
+      displayQuestion();
+    </script>
+  </body>
+</html>

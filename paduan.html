@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Penggunaan - Sistem Kelistrikan Sepeda Motor</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="sub-hero">
+        <div class="hero-content">
+            <h1>Panduan Penggunaan<span>CARA MENGGUNAKAN APLIKASI</span></h1>
+        </div>
+    </header>
+
+    <main class="panduan-content">
+        <div class="container">
+            <div class="panduan-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h2>Memulai Pembelajaran</h2>
+                    <p>Untuk memulai pembelajaran, ikuti urutan menu yang tersedia:</p>
+                    <ul>
+                        <li>Panduan (Halaman ini)</li>
+                        <li>Materi Pembelajaran</li>
+                        <li>Quiz Interaktif</li>
+                        <li>Simulasi Rangkaian</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h2>Mempelajari Materi</h2>
+                    <p>Setelah memahami panduan ini, Anda dapat mengakses materi pembelajaran. Pelajari setiap bagian dengan seksama untuk memahami sistem kelistrikan sepeda motor.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h2>Mengerjakan Quiz</h2>
+                    <p>Setelah mempelajari materi, uji pemahaman Anda melalui quiz interaktif. Quiz akan terbuka setelah Anda menyelesaikan materi pembelajaran.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h2>Simulasi Praktik</h2>
+                    <p>Terakhir, praktikkan pengetahuan Anda melalui simulasi rangkaian kelistrikan interaktif.</p>
+                </div>
+            </div>
+
+            <div class="navigation-buttons">
+                <a href="index.html" class="nav-button back"><i class="fas fa-arrow-left"></i> Kembali</a>
+                <button onclick="markAsComplete()" class="nav-button next">Lanjut ke Materi <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Simulator Sistem Kelistrikan Sepeda Motor. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="js/nav-check.js"></script>
+    <script>
+        function markAsComplete() {
+            completeSection('panduan');
+            window.location.href = 'materi.html';
+        }
+    </script>
+</body>
+</html>

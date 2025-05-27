@@ -70,7 +70,7 @@
             class="nav-button next"
             style="display: none"
           >
-            Lanjut ke Simulasi <i class="fas fa-arrow-right"></i>
+            Selesai <i class="fas fa-arrow-right"></i>
           </button>
         </div>
       </div>
@@ -397,7 +397,7 @@
       function updateProgress() {
         document.getElementById("question-number").textContent = `Pertanyaan ${
           currentQuestion + 1
-        } dari 18`;
+        } dari 25`;
         const progress = ((currentQuestion + 1) / questions.length) * 100;
         document.getElementById("progress").style.width = `${progress}%`;
       }
@@ -503,7 +503,7 @@
       }
 
       function markAsComplete() {
-        window.location.href = "sein.html";
+        window.location.href = "credits.html";
       }
 
       // Event Listeners

@@ -377,7 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.cancelable) {
             e.preventDefault();
         }
-
+        
         const component = e.currentTarget;
         let isDragging = true;
         // Use the first touch point or mouse coordinates

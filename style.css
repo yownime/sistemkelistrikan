@@ -967,3 +967,31 @@ footer .container {
         font-size: 0.97rem;
     }
 }
+
+.mobile-note {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.mobile-note i {
+    color: #856404;
+    font-size: 1.5rem;
+    margin-top: 2px;
+}
+
+.mobile-note p {
+    color: #856404;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.mobile-note strong {
+    color: #664d03;
+}

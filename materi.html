@@ -7,6 +7,89 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .materi-content .container {
+            padding: 20px;
+            background-color: #fff; /* White background for content area */
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-top: 20px; /* Space from header */
+        }
+        .materi-content h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #1ecb5c 0%, #0a8d3a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            text-align: center;
+        }
+        .materi-content h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 2px solid #eee; /* Subtle separator */
+            padding-bottom: 8px;
+        }
+         .materi-content h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: #444;
+        }
+        .materi-content h5 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            color: #555;
+            margin-left: 15px; /* Indent sub-points */
+        }
+        .materi-content p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .materi-content ol {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+        .materi-content ol li {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .materi-content h2 {
+                font-size: 1.8rem;
+            }
+            .materi-content h3 {
+                font-size: 1.4rem;
+            }
+             .materi-content h4 {
+                font-size: 1.1rem;
+            }
+             .materi-content h5 {
+                font-size: 1rem;
+                margin-left: 5px; /* Less indent on small screens */
+            }
+             .materi-content p,
+             .materi-content ol li {
+                font-size: 0.95rem;
+            }
+             .materi-content ol {
+                 margin-left: 15px;
+             }
+        }
+    </style>
 </head>
 <body>
     <header class="sub-hero">
@@ -17,36 +100,94 @@
 
     <main class="materi-content">
         <div class="container">
-            <div class="download-section">
-                <div class="pdf-preview">
-                    <i class="fas fa-file-pdf"></i>
-                    <h2>MODUL SISTEM PENERANGAN PADA SEPEDA MOTOR.pdf</h2>
-                    <p>Modul pembelajaran lengkap sistem penerangan pada sepeda motor</p>
-                    <div class="learning-objectives">
-                        <h3 style="margin-top:2rem; margin-bottom:0.7rem; color:#2e7d32;">TUJUAN PEMBELAJARAN</h3>
-                        <ol style="margin-left:1.2rem; color:#333;">
-                            <li>Melalui materi yang ditayangkan, peserta didik mampu menjelaskan komponen sistem penerangan sesuai buku pedoman.</li>
-                            <li>Melalui diskusi, peserta didik mampu merinci prinsip kerja sistem penerangan sesuai buku pedoman.</li>
-                            <li>Melalui diskusi dan simulasi, peserta didik mampu mendiagnosis minimal 2 gangguan sistem penerangan, menyebutkan penyebabnya, dan menjelaskan cara perbaikannya sesuai buku pedoman.</li>
-                            <li>Melalui praktik, peserta didik mampu merawat sistem penerangan sesuai buku pedoman.</li>
-                            <li>Melalui proyek trainer sistem penerangan, peserta didik mampu memperbaiki gangguan sistem penerangan sesuai buku pedoman.</li>
-                        </ol>
-                    </div>
-                </div>
-                <div class="download-info">
-                    <p><i class="fas fa-info-circle"></i> Silakan download dan pelajari materi berikut dengan seksama</p>
-                    <a href="document/faisaltanjung.pdf" download class="download-button">
-                        <i class="fas fa-download"></i> Download Materi
-                    </a>
-                </div>
-                <div class="instruction">
-                    <p>Setelah selesai mempelajari materi, klik tombol di bawah untuk melanjutkan ke Simulasi</p>
-                </div>
+            <h2>MATERI DAN SIMULASI</h2>
+            <h3>SISTEM PENERANGAN PADA SEPEDA MOTOR</h3>
+
+            <h4>A. Pengertian Sistem Penerangan Sepeda Motor</h4>
+            <p>
+                Sistem penerangan pada sepeda motor adalah rangkaian komponen kelistrikan yang dirancang untuk menyediakan pencahayaan dan sinyal bagi pengendara serta pengguna jalan lainnya. Fungsi utamanya adalah meningkatkan visibilitas dan keselamatan selama berkendara, terutama dalam kondisi cahaya rendah atau malam hari. Selain itu, sistem ini juga berperan sebagai alat komunikasi melalui isyarat lampu kepada pengguna jalan lain.
+            </p>
+
+            <h4>B. Jenis – Jenis Sistem Penerangan Sepeda Motor</h4>
+            <h5>1. Lampu Kepala/Besar (Headlight)</h5>
+            <p>Fungsi lampu kepala adalah untuk menerangi bagian depan dari sepeda motor saat dijalankan pada malam hari.</p>
+            <img src="image/materi1.jpg" alt="Wiring Diagram Lampu Kepala" style="max-width: 100%; height: auto; display: block; margin: 20px auto;">
+            <p>adapun komponen-komponen lampu kepala antara lain;</p>
+            <ol>
+                <li>Aki</li>
+                <li>Sekering</li>
+                <li>Kunci Kontak</li>
+                <li>Saklar Utama</li>
+                <li>Saklar Jauh Dekat</li>
+                <li>Lampu Utama</li>
+                <li>Lampu Indikator jauh</li>
+            </ol>
+
+            <div class="call-to-action" style="text-align: center; margin-top: 30px; margin-bottom: 20px;">
+                <p style="font-size: 1.1rem; color: #555; margin-bottom: 15px;">Yuk, setelah memahami komponen dan rangkaian lampu kepala, saatnya mencoba simulasi! Klik tombol di bawah ini untuk memulai.</p>
+                <a href="lampu_kepala.html" class="simulation-button" style="display: inline-block; background-color: #1ecb5c; color: white; padding: 12px 25px; text-decoration: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; transition: background-color 0.3s ease; box-shadow: 0 4px 10px rgba(0,150,0,0.2);">
+                    Mulai simulasi lampu kepala
+                </a>
+            </div>
+
+            <h5>2. Sistem Lampu Sein</h5>
+            <p>
+                Fungsi lampu sein adalah untuk memberikan isyarat pada kendaraan yang ada di depan, belakang ataupun di sisinya bahwa sepeda motor tersebut akan berbelok ke kiri atau kanan atau pindah jalur.
+            </p>
+            <img src="image/materi2.jpg" alt="Wiring Diagram Lampu Sein" style="max-width: 100%; height: auto; display: block; margin: 20px auto;">
+            <p>Sistem tanda belok memiliki komponen utama, yaitu:</p>
+            <ol>
+                <li>Baterai/Aki</li>
+                <li>Sekering</li>
+                <li>Kunci Kontak</li>
+                <li>Flasher</li>
+                <li>Swtich</li>
+                <li>Bohlam Sein</li>
+            </ol>
+
+            <div class="call-to-action" style="text-align: center; margin-top: 30px; margin-bottom: 20px;">
+                <p style="font-size: 1.1rem; color: #555; margin-bottom: 15px;">Yuk, setelah memahami komponen dan rangkaian lampu sein, saatnya mencoba simulasi! Klik tombol di bawah ini untuk memulai.</p>
+                <a href="sein.html" class="simulation-button" style="display: inline-block; background-color: #1ecb5c; color: white; padding: 12px 25px; text-decoration: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; transition: background-color 0.3s ease; box-shadow: 0 4px 10px rgba(0,150,0,0.2);">
+                    Mulai simulasi lampu sein
+                </a>
+            </div>
+
+            <h5>3. Sistem Lampu Rem</h5>
+            <p>
+                Lampu belakang (tail light) berfungsi sebagai tanda keberadaan sepeda motor bagi kendaraan di belakangnya, terutama saat malam hari. Lampu ini menyala bersamaan dengan lampu kota di bagian depan. Sementara itu, lampu rem berfungsi sebagai isyarat pengereman agar kendaraan lain dapat mengantisipasi dan menghindari benturan.
+            </p>
+            <img src="image/materi3.jpg" alt="Wiring Diagram Lampu Rem" style="max-width: 100%; height: auto; display: block; margin: 20px auto;">
+            <p>Sistem lampu rem memiliki komponen utama, yaitu:</p>
+            <ol>
+                <li>Baterai/Aki</li>
+                <li>Sekering</li>
+                <li>Kunci Kontak</li>
+                <li>Switch rem depan</li>
+                <li>Swtich rem Belakang</li>
+                <li>Bohlam rem</li>
+            </ol>
+
+            <div class="call-to-action" style="text-align: center; margin-top: 30px; margin-bottom: 20px;">
+                <p style="font-size: 1.1rem; color: #555; margin-bottom: 15px;">Yuk, setelah memahami komponen dan rangkaian lampu rem, saatnya mencoba simulasi! Klik tombol di bawah ini untuk memulai.</p>
+                <a href="rem.html" class="simulation-button" style="display: inline-block; background-color: #1ecb5c; color: white; padding: 12px 25px; text-decoration: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; transition: background-color 0.3s ease; box-shadow: 0 4px 10px rgba(0,150,0,0.2);">
+                    Mulai simulasi lampu rem
+                </a>
+            </div>
+
+            <!-- You can add more sections (C, D, etc.) here following the same pattern -->
+
+            <div class="download-module-section" style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 1px solid #eee;">
+                <p style="font-size: 1.1rem; color: #555; margin-bottom: 20px;">Penasaran bagaimana sistem penerangan bekerja di sepeda motor? Yuk, perdalam pengetahuanmu dengan membaca Modul Ajar Sistem Penerangan Sepeda Motor! Modul ini menyajikan penjelasan lengkap tentang komponen, cara kerja, pemasangan, hingga cara menguji dan memperbaiki sistem penerangan. Disertai juga dengan wiring diagram dan panduan penggunaan alat ukur. Klik tombol di bawah ini untuk mengunduh modulnya!</p>
+                <h4 style="font-size: 1.2rem; color: #333; margin-bottom: 15px;">MODUL SISTEM PENERANGAN PADA SEPEDA MOTOR.pdf</h4>
+                <a href="document/faisaltanjung.pdf" download class="download-module-button" style="display: inline-block; background-color: #ff8800; color: white; padding: 12px 25px; text-decoration: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; transition: background-color 0.3s ease; box-shadow: 0 4px 10px rgba(255,136,0,0.3);">
+                    <i class="fas fa-download"></i> Download Modul
+                </a>
             </div>
 
             <div class="navigation-buttons">
                 <a href="index.html" class="nav-button back"><i class="fas fa-arrow-left"></i> Kembali</a>
-                <button onclick="markAsComplete()" class="nav-button next">Lanjut ke Simulasi <i class="fas fa-arrow-right"></i></button>
+                <!-- The button below is just an example, adjust href as needed -->
+                <a href="quiz.html" class="nav-button next">Lanjut ke Quiz <i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
     </main>

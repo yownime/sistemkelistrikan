@@ -840,3 +840,12 @@ h2 {
     background: #f4f4f4;
     border: 1.5px solid #d1d1d1;
 }
+
+.save-button {
+    background-color: #007bff; /* Warna biru */
+    margin-left: 10px; /* Jarak dari tombol sebelumnya */
+}
+
+.save-button:hover {
+    background-color: #0056b3; /* Warna biru lebih gelap saat hover */
+}

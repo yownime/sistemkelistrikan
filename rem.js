@@ -254,6 +254,49 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('touchend', handleUp);
     }
 
+    // Komponen Massa: hanya satu connection point (input), hanya bisa dihubungkan ke kutub negatif baterai
+    function setupMassa(clone) {
+        const inputPoint = document.createElement('div');
+        inputPoint.className = 'connection-point input';
+        inputPoint.dataset.type = 'input';
+        inputPoint.style.left = '-4px';
+        inputPoint.style.top = '50%';
+        inputPoint.style.transform = 'translateY(-50%)';
+        clone.appendChild(inputPoint);
+        inputPoint.addEventListener('click', handleConnectionPointClick);
+    }
+
+    // Add event listener for the save simulation button
+    const saveButton = document.getElementById('save-simulation-btn');
+    if (saveButton) {
+        saveButton.addEventListener('click', function() {
+            const workspaceArea = document.getElementById('workspace-area'); // Get the simulation area element
+
+            html2canvas(workspaceArea).then(function(canvas) {
+                // Convert canvas to a data URL (PNG format)
+                const imgData = canvas.toDataURL('image/png');
+
+                // Create a temporary link element for download
+                const link = document.createElement('a');
+                link.download = 'simulasi-lampu-rem.png'; // Suggested filename
+                link.href = imgData;
+
+                // Programmatically click the link to trigger the download
+                link.click();
+
+                // Store image data in sessionStorage
+                sessionStorage.setItem('simulationImage_rem', imgData);
+
+                console.log('Simulation image saved and stored in session storage!');
+            }).catch(err => {
+                console.error('Error capturing simulation area:', err);
+                alert('Gagal menyimpan gambar simulasi. Mohon coba lagi.');
+            });
+        });
+    } else {
+        console.error('Save simulation button not found!');
+    }
+
     function showColorPicker(callback) {
         const colors = ['red', 'blue', 'green', 'yellow', 'black', 'orange', 'brown', 'gray', 'white'];
         const dialog = document.createElement('div');
@@ -680,18 +723,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Check socket connections
         handleSocketConnections();
-    }
-
-    // Komponen Massa: hanya satu connection point (input), hanya bisa dihubungkan ke kutub negatif baterai
-    function setupMassa(clone) {
-        const inputPoint = document.createElement('div');
-        inputPoint.className = 'connection-point input';
-        inputPoint.dataset.type = 'input';
-        inputPoint.style.left = '-4px';
-        inputPoint.style.top = '50%';
-        inputPoint.style.transform = 'translateY(-50%)';
-        clone.appendChild(inputPoint);
-        inputPoint.addEventListener('click', handleConnectionPointClick);
     }
 
 });

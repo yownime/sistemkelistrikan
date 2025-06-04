@@ -169,46 +169,85 @@
             
             try {
                 const userData = JSON.parse(sessionStorage.getItem('userData'));
-                const quizScore = sessionStorage.getItem('quizScore');
+                const quizResults = JSON.parse(sessionStorage.getItem('quizResults') || '[]');
                 
                 console.log('User Data:', userData);
-                console.log('Quiz Score:', quizScore);
+                console.log('Quiz Results:', quizResults);
                 
-                // Create URL with parameters
-                const url = new URL('https://script.google.com/macros/s/AKfycbxlTmSB8GgI4gOgim6MDfJFpY_wHR3MyBlluZKlVuGQHnfesmB7zkcM_8QEv3JM0mMRTA/exec');
-                const params = {
-                    timestamp: new Date().toLocaleString(),
-                    nama: userData.nama,
-                    kelas: userData.kelas,
-                    jurusan: userData.jurusan,
-                    score: quizScore
-                };
+                // Assuming we are sending the results of the most recent quiz attempt
+                const latestResult = quizResults.length > 0 ? quizResults[quizResults.length - 1] : null;
+
+                if (!latestResult) {
+                    alert('Tidak ada hasil quiz untuk dikirim.');
+                    sessionStorage.clear();
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                // Create URL (no parameters needed in URL for POST body)
+                const url = 'https://script.google.com/macros/s/AKfycbxnr37i5UU-4bZLD5627OKD6xTt7eJJrZBNk0S6txibpjSFGJ5lnwUL6jPtTrOkuuC3CQ/exec';
                 
-                // Add parameters to URL
-                Object.keys(params).forEach(key => 
-                    url.searchParams.append(key, params[key])
-                );
-    
+                // Create FormData object
+                const formData = new FormData();
+                formData.append('timestamp', latestResult.Timestamp);
+                formData.append('nama', latestResult.Nama);
+                formData.append('kelas', latestResult.Kelas);
+                formData.append('jurusan', latestResult.Jurusan);
+                formData.append('Total Benar', latestResult['Jawaban Benar']);
+
+                // Add detailed question results to FormData
+                for (const key in latestResult) {
+                    if (key.startsWith('Butir Soal No.')) {
+                        formData.append(key, latestResult[key]);
+                    }
+                }
+
+                // Add simulation image data to FormData
+                const simImageSein = sessionStorage.getItem('simulationImage_sein');
+                const simImageRem = sessionStorage.getItem('simulationImage_rem');
+                const simImageKepala = sessionStorage.getItem('simulationImage_kepala');
+
+                console.log('Retrieved from sessionStorage - Sein:', simImageSein ? simImageSein.substring(0, 50) + '...' : 'null');
+                console.log('Retrieved from sessionStorage - Rem:', simImageRem ? simImageRem.substring(0, 50) + '...' : 'null');
+                console.log('Retrieved from sessionStorage - Kepala:', simImageKepala ? simImageKepala.substring(0, 50) + '...' : 'null');
+
+                if (simImageSein) {
+                    formData.append('gambarsein', simImageSein);
+                    console.log('Appended gambarsein to FormData');
+                }
+                if (simImageRem) {
+                    formData.append('gambarrem', simImageRem);
+                    console.log('Appended gambarrem to FormData');
+                }
+                if (simImageKepala) {
+                    formData.append('gambarkepala', simImageKepala);
+                    console.log('Appended gambarkepala to FormData');
+                }
+
+                // Log all data in FormData before sending
+                console.log('FormData contents before sending:');
+                for (let pair of formData.entries()) {
+                    console.log(pair[0] + ': ' + (typeof pair[1] === 'string' ? pair[1].substring(0, 50) + '...' : pair[1]));
+                }
+
                 // Send as GET request instead
-                fetch(url.toString(), {
-                    method: 'GET',
-                    mode: 'no-cors'
+                fetch(url, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: formData
                 })
                 .then(response => {
                     console.log('Response received:', response);
-                    if (!response.ok && response.status !== 0) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response;
-                })
-                .then(() => {
+                    // In no-cors mode, response.ok is always false and status is 0 for cross-origin.
+                    // We can't reliably check for server-side errors here with fetch in no-cors.
+                    // We'll assume success if the fetch completes without a network error.
                     alert('Data berhasil disimpan!');
                     sessionStorage.clear();
                     window.location.href = 'index.html';
                 })
                 .catch(error => {
                     console.error('Fetch Error:', error);
-                    alert('Error: ' + error.message);
+                    alert('Error mengirim data. Mohon coba lagi.'); // More general error message
                 });
             } catch (error) {
                 console.error('Script Error:', error);

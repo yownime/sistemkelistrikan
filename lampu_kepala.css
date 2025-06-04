@@ -234,6 +234,23 @@ h2 {
   content: "← ";
 }
 
+.save-button {
+  background-color: #007bff; /* Warna biru */
+  margin-left: 10px; /* Jarak dari tombol sebelumnya */
+}
+
+.save-button:hover {
+  background-color: #0056b3; /* Warna biru lebih gelap saat hover */
+}
+
+.next-button {
+  margin-left: 10px; /* Jarak dari tombol sebelumnya */
+}
+
+.next-button::after {
+  content: " →";
+}
+
 .headlight-icon {
   position: relative;
   width: 28px;

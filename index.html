@@ -7,40 +7,185 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .logo.logo-kiri {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            height: 90px;
+            width: auto;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+            border-radius: 12px;
+            background: #fff;
+            padding: 4px;
+        }
+        .logo.logo-kanan {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            height: 90px;
+            width: auto;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+            border-radius: 12px;
+            background: #fff;
+            padding: 4px;
+        }
+        .header-center {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            padding-top: 70px;
+            padding-bottom: 40px;
+        }
+        .header-center h2 {
+            margin-bottom: 18px;
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            line-height: 1.2;
+            background: linear-gradient(90deg, #1ecb5c 0%, #0a8d3a 50%, #1ecb5c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            filter: drop-shadow(0 2px 8px rgba(30,203,92,0.10));
+        }
+        .header-center p {
+            margin: 0 auto 0 auto;
+            font-size: 1.15rem;
+            color: #ffffff;
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 600px;
+        }
+        .header-center h3 {
+            margin-top: 32px;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+        .menu-section .container {
+            margin-top: 8px;
+        }
+        @media (max-width: 900px) {
+            .header-center {
+                padding-top: 90px;
+            }
+            .logo.logo-kiri, .logo.logo-kanan {
+                height: 60px;
+                top: 8px;
+                left: 8px;
+                right: 8px;
+                border-radius: 8px;
+                padding: 2px;
+            }
+        }
+        @media (max-width: 600px) {
+            .header-center {
+                padding-top: 70px;
+                padding-bottom: 20px;
+            }
+            .header-center h2 {
+                font-size: 1.1rem;
+            }
+            .logo.logo-kiri, .logo.logo-kanan {
+                height: 40px;
+                top: 4px;
+                left: 4px;
+                right: 4px;
+                border-radius: 6px;
+                padding: 1px;
+            }
+        }
+        .menu-title {
+            text-align: center;
+            margin-top: 32px;
+            margin-bottom: 0px;
+        }
+        .menu-title h2 {
+            font-size: 2.1rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #1ecb5c 0%, #0a8d3a 50%, #1ecb5c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        .menu-title p {
+            font-size: 1.1rem;
+            color: #444;
+            font-weight: 400;
+            margin: 0 auto;
+            max-width: 500px;
+        }
+        @media (max-width: 600px) {
+            .menu-title h2 {
+                font-size: 1.2rem;
+            }
+            .menu-title p {
+                font-size: 0.95rem;
+            }
+        }
+        .menu-section {
+            padding-top: 20px;
+        }
+        .user-info-top-center {
+            position: absolute;
+            top: 24px; /* Adjusted to float more */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10; /* Ensure it's above other content */
+            background: linear-gradient(90deg, #1ecb5c 0%, #0a8d3a 100%); /* Green gradient background */
+            padding: 10px 20px; /* Adjusted padding */
+            border-radius: 12px; /* Round all corners */
+            box-shadow: 0 6px 16px rgba(0,0,0,0.25); /* Stronger shadow for floating effect */
+            color: #fff; /* Text color */
+            text-align: center; /* Center text inside */
+            display: flex; /* Use flexbox to center content */
+            justify-content: center; /* Center content horizontally */
+            align-items: center; /* Center content vertically */
+            white-space: nowrap; /* Prevent text inside from wrapping */
+        }
+        .user-info-top-center .user-profile {
+            /* Styles will be applied directly to text */
+            font-size: 0.95rem; /* Adjust font size */
+            font-weight: 600; /* Adjust font weight */
+        }
+        @media (max-width: 600px) {
+            .user-info-top-center {
+                top: 16px; /* Adjust top for small screens */
+                padding: 8px 12px; /* Adjust padding for small screens */
+                border-radius: 8px; /* Smaller radius on small screens */
+            }
+            .user-info-top-center .user-profile {
+                font-size: 0.8rem; /* Adjust font size for small screens */
+            }
+        }
+    </style>
 </head>
 <body>
     <header class="hero">
-        <div class="logo-container">
-            <img src="image/logounimed.png" alt="Logo UNIMED" class="logo">
-            <img src="image/smk14.png" alt="Logo SMK 14" class="logo">
-        </div>
-        <div class="hero-content">
-            <div class="welcome-banner">
-                <div class="user-profile">
-                    <div class="profile-icon">
-                        <i class="fas fa-user-circle"></i>
-                    </div>
-                    <div class="profile-info">
-                        <div class="profile-name">
-                            <i class="fas fa-user"></i>
-                            <span class="user-name">Selamat Datang</span>
-                        </div>
-                        <div class="profile-class">
-                            <i class="fas fa-graduation-cap"></i>
-                            <span class="user-class">Silakan login untuk memulai</span>
-                        </div>
-                    </div>
-                </div>
+        <img src="image/logounimed.png" alt="Logo UNIMED" class="logo logo-kiri">
+        <img src="image/smk14.png" alt="Logo SMK 14" class="logo logo-kanan">
+        <div class="user-info-top-center">
+            <div class="user-profile">
+                <!-- User info will be inserted here by JavaScript -->
             </div>
-            <h1>Sistem Kelistrikan Sepeda Motor<span>PEMBELAJARAN INTERAKTIF</span></h1>
-            <p>Pelajari prinsip dasar hingga aplikasi kompleks pada sistem pencahayaan dan kelistrikan kendaraan roda dua</p>
+        </div>
+        <div class="header-center">
+            <h2>MEDIA PEMBELAJARAN<br>INTERAKTIF SISTEM PENERANGAN SEPEDA MOTOR</h2>
+            <p>Pelajari dasar-dasar sistem penerangan sepeda motor, mulai dari prinsip kerja komponen hingga praktik merangkai rangkaian melalui simulator interaktif yang mudah digunakan.</p>
         </div>
     </header>
+    <div class="menu-title">
+        <h2>Menu Pembelajaran</h2>
+        <p>Pilih menu di bawah ini untuk memulai pembelajaran</p>
+    </div>
 
     <main>
         <section class="menu-section">
             <div class="container">
-                <h2 class="section-title">Menu Pembelajaran</h2>
                 <div class="menu-grid">
                     <a href="paduan.html" class="menu-card" data-menu="panduan">
                         <div class="menu-icon">
@@ -54,16 +199,8 @@
                         <div class="menu-icon">
                             <i class="fas fa-graduation-cap"></i>
                         </div>
-                        <h2>Materi</h2>
+                        <h2>Materi dan Simulasi</h2>
                         <p>Pembelajaran sistem kelistrikan sepeda motor</p>
-                    </a>
-
-                    <a href="sein.html" class="menu-card" data-menu="simulasi">
-                        <div class="menu-icon">
-                            <i class="fas fa-tools"></i>
-                        </div>
-                        <h2>Simulasi</h2>
-                        <p>Praktik simulasi rangkaian kelistrikan</p>
                     </a>
 
                     <a href="quiz.html" class="menu-card" data-menu="quiz">
@@ -129,20 +266,9 @@
         const userData = JSON.parse(sessionStorage.getItem('userData'));
         if (userData) {
             const userInfo = document.querySelector('.user-profile');
+            // Update HTML structure to display Nama and Kelas on one line without icons
             userInfo.innerHTML = `
-                <div class="profile-icon">
-                    <i class="fas fa-user-circle"></i>
-                </div>
-                <div class="profile-info">
-                    <div class="profile-name">
-                        <i class="fas fa-user"></i>
-                        <span class="user-name">${userData.nama}</span>
-                    </div>
-                    <div class="profile-class">
-                        <i class="fas fa-graduation-cap"></i>
-                        <span class="user-class">Kelas ${userData.kelas} ${userData.jurusan}</span>
-                    </div>
-                </div>
+                Nama: ${userData.nama} Kelas: ${userData.kelas}
             `;
         }
 

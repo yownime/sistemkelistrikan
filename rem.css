@@ -637,6 +637,19 @@ h2 {
     transform: translateY(-2px);
 }
 
+.prev-button::before {
+    content: "← ";
+}
+
+.save-button {
+    background-color: #007bff; /* Warna biru */
+    margin-left: 10px; /* Jarak dari tombol sebelumnya */
+}
+
+.save-button:hover {
+    background-color: #0056b3; /* Warna biru lebih gelap saat hover */
+}
+
 .next-button::after {
     content: " →";
 }
@@ -663,10 +676,6 @@ h2 {
 .navpref-button:hover {
     background-color: #45a049;
     transform: translateY(-2px);
-}
-
-.prev-button::before {
-    content: "← ";
 }
 
 /* Style untuk fuse */

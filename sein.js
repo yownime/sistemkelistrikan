@@ -17,6 +17,37 @@ document.addEventListener('DOMContentLoaded', () => {
         component.addEventListener('click', handleComponentClick);
     });
 
+    // Add event listener for the save simulation button
+    const saveButton = document.getElementById('save-simulation-btn');
+    if (saveButton) {
+        saveButton.addEventListener('click', function() {
+            const workspaceArea = document.getElementById('workspace-area');
+            
+            html2canvas(workspaceArea).then(function(canvas) {
+                // Convert canvas to a data URL (PNG format)
+                const imgData = canvas.toDataURL('image/png');
+
+                // Create a temporary link element for download
+                const link = document.createElement('a');
+                link.download = 'simulasi-lampu-sein.png';
+                link.href = imgData;
+
+                // Programmatically click the link to trigger the download
+                link.click();
+
+                // Store image data in sessionStorage
+                sessionStorage.setItem('simulationImage_sein', imgData);
+
+                console.log('Simulation image saved and stored in session storage!');
+            }).catch(err => {
+                console.error('Error capturing simulation area:', err);
+                alert('Gagal menyimpan gambar simulasi. Mohon coba lagi.');
+            });
+        });
+    } else {
+        console.error('Save simulation button not found!');
+    }
+
     // Component creation and management
     function handleComponentClick(e) {
         const clone = this.cloneNode(true);

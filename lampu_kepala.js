@@ -219,11 +219,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const switchBody = clone.querySelector('.switch-body');
             if (switchBody) {
                 // Add touch event listeners for mobile
-                switchBody.addEventListener('touchstart', (e) => {
+                switchBody.addEventListener('touchstart', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                     const switchComponent = this.closest('.switch');
                     switchComponent.classList.toggle('active');
+                    
+                    // Update toggle position
+                    const toggle = this.querySelector('.switch-toggle');
+                    if (toggle) {
+                        toggle.style.transform = switchComponent.classList.contains('active') ? 'translateX(20px)' : 'translateX(0)';
+                    }
                     
                     // Log status switch
                     const isActive = switchComponent.classList.contains('active');
@@ -234,9 +240,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 
                 // Keep existing click event listener
-                switchBody.addEventListener('click', function() {
+                switchBody.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     const switchComponent = this.closest('.switch');
                     switchComponent.classList.toggle('active');
+                    
+                    // Update toggle position
+                    const toggle = this.querySelector('.switch-toggle');
+                    if (toggle) {
+                        toggle.style.transform = switchComponent.classList.contains('active') ? 'translateX(20px)' : 'translateX(0)';
+                    }
                     
                     // Log status switch
                     const isActive = switchComponent.classList.contains('active');
@@ -318,22 +332,43 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Event listener untuk toggle switch
             const switchBody = clone.querySelector('.switch-body');
-            switchBody.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const switchComponent = this.closest('.high-beam-switch');
-                switchComponent.classList.toggle('active');
-                console.log("High-beam switch toggled:", switchComponent.classList.contains('active') ? "ON (JAUH)" : "OFF (DEKAT)");
-                updatePowerState();
-            });
-            
-            // Keep existing click event listener
-            switchBody.addEventListener('click', function() {
-                const switchComponent = this.closest('.high-beam-switch');
-                switchComponent.classList.toggle('active');
-                console.log("High-beam switch toggled:", switchComponent.classList.contains('active') ? "ON (JAUH)" : "OFF (DEKAT)");
-                updatePowerState();
-            });
+            if (switchBody) {
+                // Add touch event listeners for mobile
+                switchBody.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const switchComponent = this.closest('.high-beam-switch');
+                    switchComponent.classList.toggle('active');
+                    
+                    // Update toggle position
+                    const toggle = this.querySelector('.switch-toggle');
+                    if (toggle) {
+                        toggle.style.transform = switchComponent.classList.contains('active') ? 'translateX(20px)' : 'translateX(0)';
+                    }
+                    
+                    console.log("High-beam switch toggled:", switchComponent.classList.contains('active') ? "ON (JAUH)" : "OFF (DEKAT)");
+                    updatePowerState();
+                });
+                
+                // Keep existing click event listener
+                switchBody.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const switchComponent = this.closest('.high-beam-switch');
+                    switchComponent.classList.toggle('active');
+                    
+                    // Update toggle position
+                    const toggle = this.querySelector('.switch-toggle');
+                    if (toggle) {
+                        toggle.style.transform = switchComponent.classList.contains('active') ? 'translateX(20px)' : 'translateX(0)';
+                    }
+                    
+                    console.log("High-beam switch toggled:", switchComponent.classList.contains('active') ? "ON (JAUH)" : "OFF (DEKAT)");
+                    updatePowerState();
+                });
+            } else {
+                console.error("High-beam switch body element not found!");
+            }
         } else if (this.dataset.component === 'high-beam-indicator') {
             console.log("Creating high beam indicator component");
             

@@ -29,149 +29,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (this.dataset.component === 'massa') {
             setupMassa(clone);
         } else if (this.dataset.component === 'battery') {
-            // Add positive terminal (output)
-            const positivePoint = document.createElement('div');
-            positivePoint.className = 'connection-point output positive';
-            positivePoint.dataset.type = 'output';
-            positivePoint.dataset.polarity = 'positive';
-            clone.appendChild(positivePoint);
-            positivePoint.addEventListener('click', handleConnectionPointClick);
-
-            // Add negative terminal (output)
-            const negativePoint = document.createElement('div');
-            negativePoint.className = 'connection-point output negative';
-            negativePoint.dataset.type = 'output';
-            negativePoint.dataset.polarity = 'negative';
-            clone.appendChild(negativePoint);
-            negativePoint.addEventListener('click', handleConnectionPointClick);
-
-            // Only add voltage control to battery
-            const voltageControl = document.createElement('div');
-            voltageControl.className = 'voltage-control';
-            voltageControl.innerHTML = `
-                <input type="number" min="0" max="12" step="0.1" value="12.0" class="voltage-input">
-                <span>V</span>
-            `;
-            clone.appendChild(voltageControl);
-
-            const input = voltageControl.querySelector('.voltage-input');
-            const batteryLevel = clone.querySelector('.battery-level');
-
-            input.addEventListener('input', (e) => {
-                let value = parseFloat(e.target.value);
-                if (isNaN(value)) value = 0;
-                if (value < 0) value = 0;
-                if (value > 12) value = 12;
-                
-                const percentage = (value / 12) * 100;
-                batteryLevel.style.width = `${percentage}%`;
-                updatePowerState();
-            });
+            setupBattery(clone);
         } else if (this.dataset.component === 'fuse') {
-            console.log("Creating fuse component");
-            
-            // Tambahkan titik koneksi input
-            const inputPoint = document.createElement('div');
-            inputPoint.className = 'connection-point input';
-            inputPoint.dataset.type = 'input';
-            inputPoint.dataset.id = `connection-${connectionPointIdCounter++}`;
-            inputPoint.style.left = '-4px';
-            inputPoint.style.top = '50%';
-            inputPoint.style.transform = 'translateY(-50%)';
-            clone.appendChild(inputPoint);
-            
-            // Tambahkan titik koneksi output
-            const outputPoint = document.createElement('div');
-            outputPoint.className = 'connection-point output';
-            outputPoint.dataset.type = 'output';
-            outputPoint.dataset.id = `connection-${connectionPointIdCounter++}`;
-            outputPoint.style.right = '-4px';
-            outputPoint.style.top = '50%';
-            outputPoint.style.transform = 'translateY(-50%)';
-            clone.appendChild(outputPoint);
-            
-            inputPoint.addEventListener('click', handleConnectionPointClick);
-            outputPoint.addEventListener('click', handleConnectionPointClick);
+            setupFuse(clone);
         } else if (this.dataset.component === 'light') {
-            const inputPoint = document.createElement('div');
-            inputPoint.className = 'connection-point input';
-            inputPoint.dataset.type = 'input';
-            clone.appendChild(inputPoint);
-            inputPoint.addEventListener('click', handleConnectionPointClick);
+            setupLight(clone);
         } else if (this.dataset.component === 'brake-switch-front' || this.dataset.component === 'brake-switch-rear') {
-            // Add input/output points for brake switch
-            const inputPoint = document.createElement('div');
-            inputPoint.className = 'connection-point input';
-            inputPoint.dataset.type = 'input';
-            clone.appendChild(inputPoint);
-            inputPoint.addEventListener('click', handleConnectionPointClick);
-
-            const outputPoint = document.createElement('div');
-            outputPoint.className = 'connection-point output';
-            outputPoint.dataset.type = 'output';
-            clone.appendChild(outputPoint);
-            outputPoint.addEventListener('click', handleConnectionPointClick);
-
-            // Add switch functionality
-            const switchButton = document.createElement('button');
-            switchButton.className = 'brake-switch-button';
-            switchButton.textContent = this.dataset.component === 'brake-switch-front' ? 'Front Brake' : 'Rear Brake';
-            clone.appendChild(switchButton);
-
-            const switchType = this.dataset.component === 'brake-switch-front' ? 'front' : 'rear';
-            
-            switchButton.addEventListener('mousedown', () => {
-                brakeStates[switchType] = true;
-                switchButton.classList.add('pressed');
-                updatePowerState();
-            });
-
-            switchButton.addEventListener('mouseup', () => {
-                brakeStates[switchType] = false;
-                switchButton.classList.remove('pressed');
-                updatePowerState();
-            });
-
-            switchButton.addEventListener('mouseleave', () => {
-                if (brakeStates[switchType]) {
-                    brakeStates[switchType] = false;
-                    switchButton.classList.remove('pressed');
-                    updatePowerState();
-                }
-            });
+            setupBrakeSwitch(clone, this.dataset.component);
         } else if (this.dataset.component === 'socket') {
-            // Add red terminal (input/output)
-            const redPoint = document.createElement('div');
-            redPoint.className = 'connection-point input red';
-            redPoint.dataset.type = 'input';
-            redPoint.dataset.color = 'red';
-            redPoint.style.left = '-4px';
-            redPoint.style.top = '4px';
-            clone.appendChild(redPoint);
-            redPoint.addEventListener('click', handleConnectionPointClick);
-
-            // Add black terminal (input/output)
-            const blackPoint = document.createElement('div');
-            blackPoint.className = 'connection-point output black';
-            blackPoint.dataset.type = 'output';
-            blackPoint.dataset.color = 'black';
-            blackPoint.style.left = '-4px';
-            blackPoint.style.top = '12px';
-            clone.appendChild(blackPoint);
-            blackPoint.addEventListener('click', handleConnectionPointClick);
-
-            // Add green terminal (output)
-            const greenPoint = document.createElement('div');
-            greenPoint.className = 'connection-point output green';
-            greenPoint.dataset.type = 'output';
-            greenPoint.dataset.color = 'green';
-            greenPoint.style.right = '-4px';
-            greenPoint.style.top = '8px';
-            clone.appendChild(greenPoint);
-            greenPoint.addEventListener('click', handleConnectionPointClick);
+            setupSocket(clone);
         }
         
+        // Add event listeners for component manipulation
         clone.addEventListener('mousedown', handleMouseDown);
+        clone.addEventListener('touchstart', handleMouseDown, { passive: false });
         clone.addEventListener('contextmenu', handleContextMenu);
         workspaceArea.appendChild(clone);
     }
@@ -202,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.classList.contains('voltage-input')) return;
         if (e.target.classList.contains('connection-point')) return;
         if (e.target.classList.contains('brake-switch-button')) return;
-        // if (e.target.classList.contains('socket-switch-button')) return; // Uncomment if socket has a button
 
         // Prevent default touch behavior (like scrolling)
         if (e.cancelable) {
@@ -211,23 +81,52 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const component = e.currentTarget;
         let isDragging = true;
-        // Use the first touch point or mouse coordinates
-        let startX = (e.touches ? e.touches[0].clientX : e.clientX) - component.offsetLeft;
-        let startY = (e.touches ? e.touches[0].clientY : e.clientY) - component.offsetTop;
+        
+        // Get initial position
+        let startX, startY;
+        let initialLeft, initialTop;
+        
+        if (e.touches) {
+            // Touch event
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            initialLeft = parseInt(component.style.left) || 0;
+            initialTop = parseInt(component.style.top) || 0;
+        } else {
+            // Mouse event
+            startX = e.clientX;
+            startY = e.clientY;
+            initialLeft = parseInt(component.style.left) || 0;
+            initialTop = parseInt(component.style.top) || 0;
+        }
 
         function handleMove(ev) {
             if (!isDragging) return;
-            // Prevent default touch behavior (like scrolling)
+            
+            // Prevent default touch behavior
             if (ev.cancelable) {
-               ev.preventDefault();
+                ev.preventDefault();
             }
-            const clientX = ev.touches ? ev.touches[0].clientX : ev.clientX;
-            const clientY = ev.touches ? ev.touches[0].clientY : ev.clientY;
-            const newX = clientX - startX;
-            const newY = clientY - startY;
-
-            component.style.left = `${newX}px`;
-            component.style.top = `${newY}px`;
+            
+            let currentX, currentY;
+            
+            if (ev.touches) {
+                // Touch event
+                currentX = ev.touches[0].clientX;
+                currentY = ev.touches[0].clientY;
+            } else {
+                // Mouse event
+                currentX = ev.clientX;
+                currentY = ev.clientY;
+            }
+            
+            // Calculate new position
+            const deltaX = currentX - startX;
+            const deltaY = currentY - startY;
+            
+            // Update component position
+            component.style.left = `${initialLeft + deltaX}px`;
+            component.style.top = `${initialTop + deltaY}px`;
 
             // Update connected wires
             const points = component.querySelectorAll('.connection-point');
@@ -244,14 +143,180 @@ document.addEventListener('DOMContentLoaded', () => {
             isDragging = false;
             document.removeEventListener('mousemove', handleMove);
             document.removeEventListener('mouseup', handleUp);
-            document.removeEventListener('touchmove', handleMove);
+            document.removeEventListener('touchmove', handleMove, { passive: false });
             document.removeEventListener('touchend', handleUp);
+            document.removeEventListener('touchcancel', handleUp);
         }
 
+        // Add event listeners for both mouse and touch events
         document.addEventListener('mousemove', handleMove);
         document.addEventListener('mouseup', handleUp);
         document.addEventListener('touchmove', handleMove, { passive: false });
         document.addEventListener('touchend', handleUp);
+        document.addEventListener('touchcancel', handleUp);
+    }
+
+    // Setup functions for each component type
+    function setupBattery(clone) {
+        // Add positive terminal (output)
+        const positivePoint = document.createElement('div');
+        positivePoint.className = 'connection-point output positive';
+        positivePoint.dataset.type = 'output';
+        positivePoint.dataset.polarity = 'positive';
+        clone.appendChild(positivePoint);
+        positivePoint.addEventListener('click', handleConnectionPointClick);
+
+        // Add negative terminal (output)
+        const negativePoint = document.createElement('div');
+        negativePoint.className = 'connection-point output negative';
+        negativePoint.dataset.type = 'output';
+        negativePoint.dataset.polarity = 'negative';
+        clone.appendChild(negativePoint);
+        negativePoint.addEventListener('click', handleConnectionPointClick);
+
+        // Add voltage control
+        const voltageControl = document.createElement('div');
+        voltageControl.className = 'voltage-control';
+        voltageControl.innerHTML = `
+            <input type="number" min="0" max="12" step="0.1" value="12.0" class="voltage-input">
+            <span>V</span>
+        `;
+        clone.appendChild(voltageControl);
+
+        const input = voltageControl.querySelector('.voltage-input');
+        const batteryLevel = clone.querySelector('.battery-level');
+
+        input.addEventListener('input', (e) => {
+            let value = parseFloat(e.target.value);
+            if (isNaN(value)) value = 0;
+            if (value < 0) value = 0;
+            if (value > 12) value = 12;
+            
+            const percentage = (value / 12) * 100;
+            batteryLevel.style.width = `${percentage}%`;
+            updatePowerState();
+        });
+    }
+
+    function setupFuse(clone) {
+        // Add input terminal
+        const inputPoint = document.createElement('div');
+        inputPoint.className = 'connection-point input';
+        inputPoint.dataset.type = 'input';
+        inputPoint.style.left = '-4px';
+        inputPoint.style.top = '50%';
+        inputPoint.style.transform = 'translateY(-50%)';
+        clone.appendChild(inputPoint);
+        inputPoint.addEventListener('click', handleConnectionPointClick);
+
+        // Add output terminal
+        const outputPoint = document.createElement('div');
+        outputPoint.className = 'connection-point output';
+        outputPoint.dataset.type = 'output';
+        outputPoint.style.right = '-4px';
+        outputPoint.style.top = '50%';
+        outputPoint.style.transform = 'translateY(-50%)';
+        clone.appendChild(outputPoint);
+        outputPoint.addEventListener('click', handleConnectionPointClick);
+    }
+
+    function setupLight(clone) {
+        const inputPoint = document.createElement('div');
+        inputPoint.className = 'connection-point input';
+        inputPoint.dataset.type = 'input';
+        clone.appendChild(inputPoint);
+        inputPoint.addEventListener('click', handleConnectionPointClick);
+    }
+
+    function setupBrakeSwitch(clone, type) {
+        // Add input/output points for brake switch
+        const inputPoint = document.createElement('div');
+        inputPoint.className = 'connection-point input';
+        inputPoint.dataset.type = 'input';
+        clone.appendChild(inputPoint);
+        inputPoint.addEventListener('click', handleConnectionPointClick);
+
+        const outputPoint = document.createElement('div');
+        outputPoint.className = 'connection-point output';
+        outputPoint.dataset.type = 'output';
+        clone.appendChild(outputPoint);
+        outputPoint.addEventListener('click', handleConnectionPointClick);
+
+        // Add switch functionality
+        const switchButton = document.createElement('button');
+        switchButton.className = 'brake-switch-button';
+        switchButton.textContent = type === 'brake-switch-front' ? 'Front Brake' : 'Rear Brake';
+        clone.appendChild(switchButton);
+
+        const switchType = type === 'brake-switch-front' ? 'front' : 'rear';
+        
+        // Add touch event listeners for mobile
+        switchButton.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            brakeStates[switchType] = true;
+            switchButton.classList.add('pressed');
+            updatePowerState();
+        });
+
+        switchButton.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            brakeStates[switchType] = false;
+            switchButton.classList.remove('pressed');
+            updatePowerState();
+        });
+
+        // Keep existing mouse event listeners
+        switchButton.addEventListener('mousedown', () => {
+            brakeStates[switchType] = true;
+            switchButton.classList.add('pressed');
+            updatePowerState();
+        });
+
+        switchButton.addEventListener('mouseup', () => {
+            brakeStates[switchType] = false;
+            switchButton.classList.remove('pressed');
+            updatePowerState();
+        });
+
+        switchButton.addEventListener('mouseleave', () => {
+            if (brakeStates[switchType]) {
+                brakeStates[switchType] = false;
+                switchButton.classList.remove('pressed');
+                updatePowerState();
+            }
+        });
+    }
+
+    function setupSocket(clone) {
+        // Add red terminal (input/output)
+        const redPoint = document.createElement('div');
+        redPoint.className = 'connection-point input red';
+        redPoint.dataset.type = 'input';
+        redPoint.dataset.color = 'red';
+        redPoint.style.left = '-4px';
+        redPoint.style.top = '4px';
+        clone.appendChild(redPoint);
+        redPoint.addEventListener('click', handleConnectionPointClick);
+
+        // Add black terminal (input/output)
+        const blackPoint = document.createElement('div');
+        blackPoint.className = 'connection-point output black';
+        blackPoint.dataset.type = 'output';
+        blackPoint.dataset.color = 'black';
+        blackPoint.style.left = '-4px';
+        blackPoint.style.top = '12px';
+        clone.appendChild(blackPoint);
+        blackPoint.addEventListener('click', handleConnectionPointClick);
+
+        // Add green terminal (output)
+        const greenPoint = document.createElement('div');
+        greenPoint.className = 'connection-point output green';
+        greenPoint.dataset.type = 'output';
+        greenPoint.dataset.color = 'green';
+        greenPoint.style.right = '-4px';
+        greenPoint.style.top = '8px';
+        clone.appendChild(greenPoint);
+        greenPoint.addEventListener('click', handleConnectionPointClick);
     }
 
     // Komponen Massa: hanya satu connection point (input), hanya bisa dihubungkan ke kutub negatif baterai

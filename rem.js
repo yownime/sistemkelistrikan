@@ -229,62 +229,74 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupBrakeSwitch(clone, type) {
-        // Add input/output points for brake switch
+        // Add input terminal
         const inputPoint = document.createElement('div');
         inputPoint.className = 'connection-point input';
         inputPoint.dataset.type = 'input';
+        inputPoint.dataset.id = `connection-${connectionPointIdCounter++}`;
+        inputPoint.style.left = '-4px';
+        inputPoint.style.top = '50%';
+        inputPoint.style.transform = 'translateY(-50%)';
         clone.appendChild(inputPoint);
-        inputPoint.addEventListener('click', handleConnectionPointClick);
-
+        
+        // Add output terminal
         const outputPoint = document.createElement('div');
         outputPoint.className = 'connection-point output';
         outputPoint.dataset.type = 'output';
+        outputPoint.dataset.id = `connection-${connectionPointIdCounter++}`;
+        outputPoint.style.right = '-4px';
+        outputPoint.style.top = '50%';
+        outputPoint.style.transform = 'translateY(-50%)';
         clone.appendChild(outputPoint);
-        outputPoint.addEventListener('click', handleConnectionPointClick);
-
-        // Add switch functionality
-        const switchButton = document.createElement('button');
-        switchButton.className = 'brake-switch-button';
-        switchButton.textContent = type === 'brake-switch-front' ? 'Front Brake' : 'Rear Brake';
-        clone.appendChild(switchButton);
-
-        const switchType = type === 'brake-switch-front' ? 'front' : 'rear';
+        
+        // Add brake switch button
+        const brakeSwitch = document.createElement('button');
+        brakeSwitch.className = 'brake-switch-button';
+        brakeSwitch.textContent = type === 'brake-switch-front' ? 'Front Brake' : 'Rear Brake';
+        brakeSwitch.dataset.state = 'off';
+        brakeSwitch.style.padding = '4px 8px';
+        brakeSwitch.style.fontSize = '11px';
+        brakeSwitch.style.marginTop = '5px';
+        brakeSwitch.style.width = '90%';
+        brakeSwitch.style.backgroundColor = '#ff9800';
+        brakeSwitch.style.color = 'white';
+        brakeSwitch.style.border = 'none';
+        brakeSwitch.style.borderRadius = '4px';
+        brakeSwitch.style.cursor = 'pointer';
+        brakeSwitch.style.whiteSpace = 'nowrap';
+        brakeSwitch.style.overflow = 'hidden';
+        brakeSwitch.style.textOverflow = 'ellipsis';
         
         // Add touch event listeners for mobile
-        switchButton.addEventListener('touchstart', (e) => {
+        brakeSwitch.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            brakeStates[switchType] = true;
-            switchButton.classList.add('pressed');
-            updatePowerState();
+            e.stopPropagation();
+            handleBrakeSwitchClick(e);
         });
+        
+        // Keep existing click event listener
+        brakeSwitch.addEventListener('click', handleBrakeSwitchClick);
+        
+        clone.appendChild(brakeSwitch);
+        
+        inputPoint.addEventListener('click', handleConnectionPointClick);
+        outputPoint.addEventListener('click', handleConnectionPointClick);
+    }
 
-        switchButton.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            brakeStates[switchType] = false;
-            switchButton.classList.remove('pressed');
-            updatePowerState();
-        });
-
-        // Keep existing mouse event listeners
-        switchButton.addEventListener('mousedown', () => {
-            brakeStates[switchType] = true;
-            switchButton.classList.add('pressed');
-            updatePowerState();
-        });
-
-        switchButton.addEventListener('mouseup', () => {
-            brakeStates[switchType] = false;
-            switchButton.classList.remove('pressed');
-            updatePowerState();
-        });
-
-        switchButton.addEventListener('mouseleave', () => {
-            if (brakeStates[switchType]) {
-                brakeStates[switchType] = false;
-                switchButton.classList.remove('pressed');
-                updatePowerState();
-            }
-        });
+    // Add brake switch click handler
+    function handleBrakeSwitchClick(e) {
+        e.stopPropagation();
+        const button = e.target;
+        
+        if (button.dataset.state === 'off') {
+            button.dataset.state = 'on';
+            button.style.backgroundColor = '#4CAF50';
+        } else {
+            button.dataset.state = 'off';
+            button.style.backgroundColor = '#ff9800';
+        }
+        
+        updatePowerState();
     }
 
     function setupSocket(clone) {

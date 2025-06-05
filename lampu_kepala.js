@@ -143,7 +143,17 @@ document.addEventListener('DOMContentLoaded', () => {
             ignitionSwitch.style.border = 'none';
             ignitionSwitch.style.borderRadius = '4px';
             ignitionSwitch.style.cursor = 'pointer';
+            
+            // Add touch event listeners for mobile
+            ignitionSwitch.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleIgnitionSwitchClick(e);
+            });
+            
+            // Keep existing click event listener
             ignitionSwitch.addEventListener('click', handleIgnitionSwitchClick);
+            
             clone.appendChild(ignitionSwitch);
             
             inputPoint.addEventListener('click', handleConnectionPointClick);

@@ -8,11 +8,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let wireIdCounter = 1;
     let ignitionKeyState = false;
 
+    // Initialize event listeners for both mouse and touch
     components.forEach(component => {
+        // Mouse click event
         component.addEventListener('click', handleComponentClick);
+        // Touch event
+        component.addEventListener('touchend', handleComponentClick, { passive: false });
     });
 
     function handleComponentClick(e) {
+        // Prevent default behavior for touch events
+        if (e.type === 'touchend') {
+            e.preventDefault();
+        }
+
         const clone = this.cloneNode(true);
         clone.style.position = 'absolute';
         
@@ -50,6 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
         clone.addEventListener('touchstart', handleMouseDown, { passive: false });
         clone.addEventListener('contextmenu', handleContextMenu);
         workspaceArea.appendChild(clone);
+
+        // Prevent any default touch behavior
+        if (e.type === 'touchend') {
+            e.stopPropagation();
+        }
     }
 
     function handleContextMenu(e) {

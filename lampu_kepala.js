@@ -377,23 +377,52 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const component = e.currentTarget;
         let isDragging = true;
-        // Use the first touch point or mouse coordinates
-        let startX = (e.touches ? e.touches[0].clientX : e.clientX) - component.offsetLeft;
-        let startY = (e.touches ? e.touches[0].clientY : e.clientY) - component.offsetTop;
+        
+        // Get initial position
+        let startX, startY;
+        let initialLeft, initialTop;
+        
+        if (e.touches) {
+            // Touch event
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            initialLeft = parseInt(component.style.left) || 0;
+            initialTop = parseInt(component.style.top) || 0;
+        } else {
+            // Mouse event
+            startX = e.clientX;
+            startY = e.clientY;
+            initialLeft = parseInt(component.style.left) || 0;
+            initialTop = parseInt(component.style.top) || 0;
+        }
 
         function handleMove(ev) {
             if (!isDragging) return;
-            // Prevent default touch behavior (like scrolling)
+            
+            // Prevent default touch behavior
             if (ev.cancelable) {
-               ev.preventDefault();
+                ev.preventDefault();
             }
-            const clientX = ev.touches ? ev.touches[0].clientX : ev.clientX;
-            const clientY = ev.touches ? ev.touches[0].clientY : ev.clientY;
-            const newX = clientX - startX;
-            const newY = clientY - startY;
-
-            component.style.left = `${newX}px`;
-            component.style.top = `${newY}px`;
+            
+            let currentX, currentY;
+            
+            if (ev.touches) {
+                // Touch event
+                currentX = ev.touches[0].clientX;
+                currentY = ev.touches[0].clientY;
+            } else {
+                // Mouse event
+                currentX = ev.clientX;
+                currentY = ev.clientY;
+            }
+            
+            // Calculate new position
+            const deltaX = currentX - startX;
+            const deltaY = currentY - startY;
+            
+            // Update component position
+            component.style.left = `${initialLeft + deltaX}px`;
+            component.style.top = `${initialTop + deltaY}px`;
 
             // Update connected wires
             const points = component.querySelectorAll('.connection-point');
@@ -410,14 +439,17 @@ document.addEventListener('DOMContentLoaded', () => {
             isDragging = false;
             document.removeEventListener('mousemove', handleMove);
             document.removeEventListener('mouseup', handleUp);
-            document.removeEventListener('touchmove', handleMove);
+            document.removeEventListener('touchmove', handleMove, { passive: false });
             document.removeEventListener('touchend', handleUp);
+            document.removeEventListener('touchcancel', handleUp);
         }
 
+        // Add event listeners for both mouse and touch events
         document.addEventListener('mousemove', handleMove);
         document.addEventListener('mouseup', handleUp);
         document.addEventListener('touchmove', handleMove, { passive: false });
         document.addEventListener('touchend', handleUp);
+        document.addEventListener('touchcancel', handleUp);
     }
 
     function showColorPicker(callback) {

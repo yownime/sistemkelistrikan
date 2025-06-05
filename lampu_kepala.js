@@ -8,20 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let wireIdCounter = 1;
     let ignitionKeyState = false;
 
-    // Initialize event listeners for both mouse and touch
     components.forEach(component => {
-        // Mouse click event
         component.addEventListener('click', handleComponentClick);
-        // Touch event
-        component.addEventListener('touchend', handleComponentClick, { passive: false });
     });
 
     function handleComponentClick(e) {
-        // Prevent default behavior for touch events
-        if (e.type === 'touchend') {
-            e.preventDefault();
-        }
-
         const clone = this.cloneNode(true);
         clone.style.position = 'absolute';
         
@@ -37,21 +28,313 @@ document.addEventListener('DOMContentLoaded', () => {
         if (this.dataset.component === 'massa') {
             setupMassa(clone);
         } else if (this.dataset.component === 'battery') {
-            setupBattery(clone);
+            console.log("Creating battery component");
+            
+            // Tambahkan kutub positif (kanan atas, merah)
+            const positivePoint = document.createElement('div');
+            positivePoint.className = 'connection-point output positive';
+            positivePoint.dataset.type = 'output';
+            positivePoint.dataset.id = `connection-${connectionPointIdCounter++}`;
+            positivePoint.style.right = '-5px';
+            positivePoint.style.top = '5px';
+            positivePoint.style.backgroundColor = '#ff0000';
+            clone.appendChild(positivePoint);
+            positivePoint.addEventListener('click', handleConnectionPointClick);
+
+            // Tambahkan kutub negatif (kanan bawah, hitam)
+            const negativePoint = document.createElement('div');
+            negativePoint.className = 'connection-point output negative';
+            negativePoint.dataset.type = 'output';
+            negativePoint.dataset.id = `connection-${connectionPointIdCounter++}`;
+            negativePoint.style.right = '-5px';
+            negativePoint.style.bottom = '5px';
+            negativePoint.style.backgroundColor = '#000000';
+            clone.appendChild(negativePoint);
+            negativePoint.addEventListener('click', handleConnectionPointClick);
+
+            // Modifikasi kontrol tegangan
+            const voltageControl = document.createElement('div');
+            voltageControl.className = 'voltage-control';
+            voltageControl.innerHTML = `
+                <input type="number" min="0" max="24" step="0.1" value="12.0" class="voltage-input">
+                <span>V</span>
+            `;
+            clone.appendChild(voltageControl);
+
+            const input = voltageControl.querySelector('.voltage-input');
+
+            input.addEventListener('input', (e) => {
+                let value = parseFloat(e.target.value);
+                if (isNaN(value)) value = 0;
+                if (value < 0) value = 0;
+                if (value > 24) value = 24;
+                
+                // Tambahkan indikator visual untuk tegangan
+                const batteryIcon = clone.querySelector('.battery-icon');
+                if (value === 12) {
+                    batteryIcon.style.borderColor = '#4CAF50'; // Hijau untuk tegangan tepat
+                    batteryIcon.style.boxShadow = '0 0 5px #4CAF50';
+                } else {
+                    batteryIcon.style.borderColor = '#ff4444'; // Merah untuk tegangan tidak tepat
+                    batteryIcon.style.boxShadow = '0 0 5px #ff4444';
+                }
+                
+                updatePowerState();
+            });
         } else if (this.dataset.component === 'fuse') {
-            setupFuse(clone);
+            console.log("Creating fuse component");
+            
+            // Tambahkan titik koneksi input
+            const inputPoint = document.createElement('div');
+            inputPoint.className = 'connection-point input';
+            inputPoint.dataset.type = 'input';
+            inputPoint.dataset.id = `connection-${connectionPointIdCounter++}`;
+            inputPoint.style.left = '-4px';
+            inputPoint.style.top = '50%';
+            inputPoint.style.transform = 'translateY(-50%)';
+            clone.appendChild(inputPoint);
+            
+            // Tambahkan titik koneksi output
+            const outputPoint = document.createElement('div');
+            outputPoint.className = 'connection-point output';
+            outputPoint.dataset.type = 'output';
+            outputPoint.dataset.id = `connection-${connectionPointIdCounter++}`;
+            outputPoint.style.right = '-4px';
+            outputPoint.style.top = '50%';
+            outputPoint.style.transform = 'translateY(-50%)';
+            clone.appendChild(outputPoint);
+            
+            inputPoint.addEventListener('click', handleConnectionPointClick);
+            outputPoint.addEventListener('click', handleConnectionPointClick);
         } else if (this.dataset.component === 'ignition-key') {
-            setupIgnitionKey(clone);
+            console.log("Creating ignition key component");
+            
+            // Tambahkan titik koneksi input
+            const inputPoint = document.createElement('div');
+            inputPoint.className = 'connection-point input';
+            inputPoint.dataset.type = 'input';
+            inputPoint.dataset.id = `connection-${connectionPointIdCounter++}`;
+            inputPoint.style.left = '-4px';
+            inputPoint.style.top = '50%';
+            inputPoint.style.transform = 'translateY(-50%)';
+            clone.appendChild(inputPoint);
+            
+            // Tambahkan titik koneksi output
+            const outputPoint = document.createElement('div');
+            outputPoint.className = 'connection-point output';
+            outputPoint.dataset.type = 'output';
+            outputPoint.dataset.id = `connection-${connectionPointIdCounter++}`;
+            outputPoint.style.right = '-4px';
+            outputPoint.style.top = '50%';
+            outputPoint.style.transform = 'translateY(-50%)';
+            clone.appendChild(outputPoint);
+            
+            // Tambahkan tombol on/off untuk kunci kontak
+            const ignitionSwitch = document.createElement('button');
+            ignitionSwitch.className = 'ignition-switch-button';
+            ignitionSwitch.textContent = 'OFF';
+            ignitionSwitch.dataset.state = 'off';
+            ignitionSwitch.style.padding = '4px 8px';
+            ignitionSwitch.style.fontSize = '12px';
+            ignitionSwitch.style.marginTop = '5px';
+            ignitionSwitch.style.width = '100%';
+            ignitionSwitch.style.backgroundColor = '#ff9800';
+            ignitionSwitch.style.color = 'white';
+            ignitionSwitch.style.border = 'none';
+            ignitionSwitch.style.borderRadius = '4px';
+            ignitionSwitch.style.cursor = 'pointer';
+            ignitionSwitch.addEventListener('click', handleIgnitionSwitchClick);
+            clone.appendChild(ignitionSwitch);
+            
+            inputPoint.addEventListener('click', handleConnectionPointClick);
+            outputPoint.addEventListener('click', handleConnectionPointClick);
         } else if (this.dataset.component === 'headlight') {
-            setupHeadlight(clone);
+            console.log("Creating headlight component");
+            
+            // Tambahkan titik koneksi input
+            const inputPoint = document.createElement('div');
+            inputPoint.className = 'connection-point input';
+            inputPoint.dataset.type = 'input';
+            inputPoint.dataset.id = `connection-${connectionPointIdCounter++}`;
+            inputPoint.style.left = '-4px';
+            inputPoint.style.top = '50%';
+            inputPoint.style.transform = 'translateY(-50%)';
+            clone.appendChild(inputPoint);
+            
+            // Tambahkan elemen visual lampu
+            const headlightBulb = document.createElement('div');
+            headlightBulb.className = 'headlight-bulb';
+            clone.querySelector('.headlight-icon').appendChild(headlightBulb);
+            
+            inputPoint.addEventListener('click', handleConnectionPointClick);
         } else if (this.dataset.component === 'switch') {
-            setupSwitch(clone);
+            console.log("Creating power switch component");
+            
+            // Tambahkan titik koneksi input dan output
+            const inputPoint = document.createElement('div');
+            inputPoint.className = 'connection-point input';
+            inputPoint.dataset.type = 'input';
+            inputPoint.dataset.id = `connection-${connectionPointIdCounter++}`;
+            inputPoint.style.left = '-4px';
+            inputPoint.style.top = '50%';
+            inputPoint.style.transform = 'translateY(-50%)';
+            clone.appendChild(inputPoint);
+            
+            const outputPoint = document.createElement('div');
+            outputPoint.className = 'connection-point output';
+            outputPoint.dataset.type = 'output';
+            outputPoint.dataset.id = `connection-${connectionPointIdCounter++}`;
+            outputPoint.style.right = '-4px';
+            outputPoint.style.top = '50%';
+            outputPoint.style.transform = 'translateY(-50%)';
+            clone.appendChild(outputPoint);
+            
+            // PENTING: Buat elemen visual switch jika belum ada
+            if (!clone.querySelector('.switch-body')) {
+                const switchBody = document.createElement('div');
+                switchBody.className = 'switch-body';
+                
+                const switchToggle = document.createElement('div');
+                switchToggle.className = 'switch-toggle';
+                
+                switchBody.appendChild(switchToggle);
+                clone.appendChild(switchBody);
+            }
+            
+            // Tambahkan event listener untuk koneksi dan toggle
+            inputPoint.addEventListener('click', handleConnectionPointClick);
+            outputPoint.addEventListener('click', handleConnectionPointClick);
+            
+            // Event listener untuk toggle switch
+            const switchBody = clone.querySelector('.switch-body');
+            if (switchBody) {
+                switchBody.addEventListener('click', function() {
+                    const switchComponent = this.closest('.switch');
+                    switchComponent.classList.toggle('active');
+                    
+                    // Log status switch
+                    const isActive = switchComponent.classList.contains('active');
+                    console.log(`Power switch turned ${isActive ? 'ON' : 'OFF'}`);
+                    
+                    // Update power state
+                    updatePowerState();
+                });
+            } else {
+                console.error("Switch body element not found!");
+            }
         } else if (this.dataset.component === 'speedometer') {
-            setupSpeedometer(clone);
+            console.log("Creating speedometer component");
+            
+            // Tambahkan titik koneksi input
+            const inputPoint = document.createElement('div');
+            inputPoint.className = 'connection-point input';
+            inputPoint.dataset.type = 'input';
+            inputPoint.dataset.id = `connection-${connectionPointIdCounter++}`;
+            inputPoint.style.left = '-4px';
+            inputPoint.style.top = '50%';
+            inputPoint.style.transform = 'translateY(-50%)';
+            clone.appendChild(inputPoint);
+            
+            // Pastikan elemen speedometer-light ada
+            if (!clone.querySelector('.speedometer-light')) {
+                console.log("Adding missing speedometer-light element");
+                const iconContainer = clone.querySelector('.speedometer-icon');
+                
+                if (iconContainer) {
+                    const speedoLight = document.createElement('div');
+                    speedoLight.className = 'speedometer-light';
+                    iconContainer.appendChild(speedoLight);
+                } else {
+                    console.error("Speedometer icon container not found!");
+                    
+                    // Buat dari awal jika perlu
+                    const iconContainer = document.createElement('div');
+                    iconContainer.className = 'speedometer-icon';
+                    
+                    const speedoLight = document.createElement('div');
+                    speedoLight.className = 'speedometer-light';
+                    
+                    iconContainer.appendChild(speedoLight);
+                    clone.appendChild(iconContainer);
+                }
+            }
+            
+            inputPoint.addEventListener('click', handleConnectionPointClick);
+            
+            // Log struktur speedometer untuk debugging
+            console.log("Speedometer component created with structure:", clone.innerHTML);
         } else if (this.dataset.component === 'high-beam-switch') {
-            setupHighBeamSwitch(clone);
+            console.log("Creating high-beam switch component");
+            
+            // Tambahkan titik koneksi input
+            const inputPoint = document.createElement('div');
+            inputPoint.className = 'connection-point input';
+            inputPoint.dataset.type = 'input';
+            inputPoint.dataset.id = `connection-${connectionPointIdCounter++}`;
+            inputPoint.style.left = '-4px';
+            inputPoint.style.top = '50%';
+            inputPoint.style.transform = 'translateY(-50%)';
+            clone.appendChild(inputPoint);
+            
+            // Tambahkan titik koneksi output
+            const outputPoint = document.createElement('div');
+            outputPoint.className = 'connection-point output';
+            outputPoint.dataset.type = 'output';
+            outputPoint.dataset.id = `connection-${connectionPointIdCounter++}`;
+            outputPoint.style.right = '-4px';
+            outputPoint.style.top = '50%';
+            outputPoint.style.transform = 'translateY(-50%)';
+            clone.appendChild(outputPoint);
+            
+            // Tambahkan event listener
+            inputPoint.addEventListener('click', handleConnectionPointClick);
+            outputPoint.addEventListener('click', handleConnectionPointClick);
+            
+            // Event listener untuk toggle switch
+            const switchBody = clone.querySelector('.switch-body');
+            switchBody.addEventListener('click', function() {
+                const switchComponent = this.closest('.high-beam-switch');
+                switchComponent.classList.toggle('active');
+                console.log("High-beam switch toggled:", switchComponent.classList.contains('active') ? "ON (JAUH)" : "OFF (DEKAT)");
+                updatePowerState();
+            });
         } else if (this.dataset.component === 'high-beam-indicator') {
-            setupHighBeamIndicator(clone);
+            console.log("Creating high beam indicator component");
+            
+            // Tambahkan titik koneksi input
+            const inputPoint = document.createElement('div');
+            inputPoint.className = 'connection-point input';
+            inputPoint.dataset.type = 'input';
+            inputPoint.dataset.id = `connection-${connectionPointIdCounter++}`;
+            inputPoint.style.left = '-4px';
+            inputPoint.style.top = '50%';
+            inputPoint.style.transform = 'translateY(-50%)';
+            clone.appendChild(inputPoint);
+            
+            // Pastikan elemen high-beam-light ada
+            if (!clone.querySelector('.high-beam-light')) {
+                console.log("Adding high beam light element");
+                const iconContainer = clone.querySelector('.high-beam-icon');
+                
+                if (iconContainer) {
+                    const highBeamLight = document.createElement('div');
+                    highBeamLight.className = 'high-beam-light';
+                    iconContainer.appendChild(highBeamLight);
+                } else {
+                    // Buat dari awal jika container tidak ada
+                    const iconContainer = document.createElement('div');
+                    iconContainer.className = 'high-beam-icon';
+                    
+                    const highBeamLight = document.createElement('div');
+                    highBeamLight.className = 'high-beam-light';
+                    
+                    iconContainer.appendChild(highBeamLight);
+                    clone.appendChild(iconContainer);
+                }
+            }
+            
+            inputPoint.addEventListener('click', handleConnectionPointClick);
+            console.log("High beam indicator component created with structure:", clone.innerHTML);
         }
         
         // Add event listeners for component manipulation
@@ -59,11 +342,6 @@ document.addEventListener('DOMContentLoaded', () => {
         clone.addEventListener('touchstart', handleMouseDown, { passive: false });
         clone.addEventListener('contextmenu', handleContextMenu);
         workspaceArea.appendChild(clone);
-
-        // Prevent any default touch behavior
-        if (e.type === 'touchend') {
-            e.stopPropagation();
-        }
     }
 
     function handleContextMenu(e) {

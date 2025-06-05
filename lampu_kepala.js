@@ -218,6 +218,22 @@ document.addEventListener('DOMContentLoaded', () => {
             // Event listener untuk toggle switch
             const switchBody = clone.querySelector('.switch-body');
             if (switchBody) {
+                // Add touch event listeners for mobile
+                switchBody.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const switchComponent = this.closest('.switch');
+                    switchComponent.classList.toggle('active');
+                    
+                    // Log status switch
+                    const isActive = switchComponent.classList.contains('active');
+                    console.log(`Power switch turned ${isActive ? 'ON' : 'OFF'}`);
+                    
+                    // Update power state
+                    updatePowerState();
+                });
+                
+                // Keep existing click event listener
                 switchBody.addEventListener('click', function() {
                     const switchComponent = this.closest('.switch');
                     switchComponent.classList.toggle('active');
@@ -302,6 +318,16 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Event listener untuk toggle switch
             const switchBody = clone.querySelector('.switch-body');
+            switchBody.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const switchComponent = this.closest('.high-beam-switch');
+                switchComponent.classList.toggle('active');
+                console.log("High-beam switch toggled:", switchComponent.classList.contains('active') ? "ON (JAUH)" : "OFF (DEKAT)");
+                updatePowerState();
+            });
+            
+            // Keep existing click event listener
             switchBody.addEventListener('click', function() {
                 const switchComponent = this.closest('.high-beam-switch');
                 switchComponent.classList.toggle('active');
